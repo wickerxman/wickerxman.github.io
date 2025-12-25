@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,13 +6,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
   <!-- Primary SEO -->
-  <title>SysAdmin Quick Tools — JSON↔YAML, CSV→Markdown, Epoch, Base64, Diff</title>
-  <meta name="description" content="Fast client-side utilities for sysadmins: JSON↔YAML converter, CSV→Markdown table, epoch timestamp converter, Base64/URL encode-decode, and quick text diff. Nothing is uploaded." />
+  <title>SysAdmin Quick Tools — JSON↔YAML, CSV→Markdown, Epoch, Base64, Diff, Password Check</title>
+  <meta name="description" content="Fast client-side utilities for sysadmins: JSON↔YAML converter, CSV→Markdown table, epoch timestamp converter, Base64/URL encode-decode, quick text diff, and an offline password strength checker. Nothing is uploaded." />
   <link rel="canonical" href="https://www.spriteguide.com/" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <meta name="theme-color" content="#0b1020" />
 
-  <!-- Favicons (add these files later if you want) -->
+  <!-- Favicons (optional files) -->
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -19,16 +20,16 @@
   <!-- Open Graph / Social -->
   <meta property="og:site_name" content="SysAdmin Quick Tools" />
   <meta property="og:title" content="SysAdmin Quick Tools" />
-  <meta property="og:description" content="Client-side ops utilities: JSON↔YAML, CSV→Markdown, Epoch, Base64/URL, Diff. Nothing is uploaded." />
+  <meta property="og:description" content="Client-side ops utilities: JSON↔YAML, CSV→Markdown, Epoch, Base64/URL, Diff, and offline password strength. Nothing is uploaded." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.spriteguide.com/" />
-  <!-- Optional: add an image for sharing -->
+  <!-- Optional OG image -->
   <!-- <meta property="og:image" content="https://www.spriteguide.com/og.png" /> -->
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SysAdmin Quick Tools" />
-  <meta name="twitter:description" content="Client-side ops utilities: JSON↔YAML, CSV→Markdown, Epoch, Base64/URL, Diff. Nothing is uploaded." />
-  <!-- Optional: add an image for sharing -->
+  <meta name="twitter:description" content="Client-side ops utilities: JSON↔YAML, CSV→Markdown, Epoch, Base64/URL, Diff, and offline password strength. Nothing is uploaded." />
+  <!-- Optional Twitter image -->
   <!-- <meta name="twitter:image" content="https://www.spriteguide.com/og.png" /> -->
 
   <!-- Structured Data (JSON-LD) -->
@@ -40,7 +41,7 @@
     "url":"https://www.spriteguide.com/",
     "applicationCategory":"DeveloperApplication",
     "operatingSystem":"Any",
-    "description":"Fast client-side utilities for sysadmins: JSON↔YAML, CSV→Markdown, epoch converter, Base64/URL encoder/decoder, and quick text diff. Nothing is uploaded.",
+    "description":"Fast client-side utilities for sysadmins: JSON↔YAML, CSV→Markdown, epoch converter, Base64/URL encoder/decoder, quick text diff, and offline password strength checker. Nothing is uploaded.",
     "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
   }
   </script>
@@ -173,7 +174,7 @@
       color:var(--muted);
       font-size:13px;
     }
-    textarea, input[type="text"]{
+    textarea, input[type="text"], input[type="password"]{
       width:100%;
       border:1px solid rgba(34,48,88,.85);
       background:rgba(8,12,25,.55);
@@ -277,6 +278,55 @@
       text-align:center;
       font-size:13px;
     }
+
+    /* Password checker visuals */
+    .pwbar{
+      height:10px;
+      width:100%;
+      border-radius:999px;
+      background:rgba(34,48,88,.75);
+      overflow:hidden;
+      border:1px solid rgba(34,48,88,.95);
+    }
+    .pwbar > div{
+      height:100%;
+      width:0%;
+      background:rgba(255,107,107,.9);
+      transition:width .15s ease;
+    }
+    .pwgrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (max-width: 900px){
+      .pwgrid{grid-template-columns:1fr}
+    }
+    .pwbox{
+      border:1px solid rgba(34,48,88,.85);
+      background:rgba(8,12,25,.35);
+      border-radius:12px;
+      padding:12px;
+    }
+    .pwbox b{font-family:var(--sans)}
+    .pwlist{
+      margin:8px 0 0;
+      padding-left:16px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.4;
+    }
+    .badge{
+      display:inline-block;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(34,48,88,.85);
+      background:rgba(8,12,25,.35);
+      font-size:12px;
+      color:var(--muted);
+      margin-left:8px;
+    }
   </style>
 </head>
 
@@ -299,7 +349,7 @@
     </noscript>
 
     <div class="subhead">
-      Fast, private ops utilities for 2026: converters, timestamp tools, and quick diffs you can keep pinned.
+      Fast, private ops utilities for 2026: converters, timestamp tools, quick diffs, and password strength checks you can keep pinned.
     </div>
 
     <div class="togglebar">
@@ -308,6 +358,7 @@
       <span class="chip" data-jump="epoch">Epoch</span>
       <span class="chip" data-jump="b64">Base64 / URL</span>
       <span class="chip" data-jump="diff">Diff</span>
+      <span class="chip" data-jump="pwcheck">Password</span>
     </div>
 
     <div class="grid">
@@ -569,6 +620,76 @@
         </details>
       </div>
 
+      <!-- Password Checker -->
+      <div class="card" id="pwcheck">
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon">PW</div>
+              <div>
+                <div class="sum-title">Password Strength Checker (offline)</div>
+                <div class="hint">Estimates entropy + crack time. No upload, no storage.</div>
+              </div>
+            </div>
+            <div class="chev">▾</div>
+          </summary>
+
+          <div class="content">
+            <div class="row single">
+              <div>
+                <label>
+                  Password
+                  <span class="hint" id="pwStatus"></span>
+                </label>
+                <input type="password" id="pwInput" placeholder="Type or paste a password (stays local)..." autocomplete="off" />
+                <div class="actions">
+                  <div class="left-actions">
+                    <button class="btn secondary" id="pwToggleBtn">Show</button>
+                    <button class="btn secondary" id="pwGenBtn" title="Generate a strong password locally">Generate</button>
+                    <button class="btn secondary" id="pwCopyBtn" title="Copy password">Copy</button>
+                  </div>
+                  <div class="right-actions">
+                    <button class="btn secondary" id="pwClearBtn">Clear</button>
+                  </div>
+                </div>
+
+                <div class="pwbar" aria-label="Password strength meter" style="margin-top:10px;">
+                  <div id="pwBarFill"></div>
+                </div>
+
+                <div class="pwgrid">
+                  <div class="pwbox">
+                    <div><b>Score:</b> <span id="pwScore">—</span><span class="badge" id="pwBadge">—</span></div>
+                    <div style="margin-top:6px;"><b>Entropy:</b> <span id="pwEntropy">—</span> bits</div>
+                    <div style="margin-top:6px;"><b>Character set:</b> <span id="pwCharset">—</span></div>
+                    <div style="margin-top:6px;"><b>Length:</b> <span id="pwLength">—</span></div>
+                  </div>
+
+                  <div class="pwbox">
+                    <div><b>Estimated crack time</b></div>
+                    <div class="hint" style="margin-top:6px;">Assumes offline guessing on a fast attacker rig. Real-world varies.</div>
+                    <div style="margin-top:10px;"><b>10k guesses/sec:</b> <span id="pwT10k">—</span></div>
+                    <div style="margin-top:6px;"><b>1B guesses/sec:</b> <span id="pwT1b">—</span></div>
+                    <div style="margin-top:6px;"><b>100B guesses/sec:</b> <span id="pwT100b">—</span></div>
+                  </div>
+
+                  <div class="pwbox">
+                    <div><b>Suggestions</b></div>
+                    <ul class="pwlist" id="pwTips">
+                      <li>Use 14+ characters.</li>
+                      <li>Mix upper/lowercase, numbers, symbols.</li>
+                      <li>Avoid reused or known-breached passwords.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="status" id="pwStatusBox" style="margin-top:12px;">Ready.</div>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
     </div>
 
     <footer>
@@ -757,15 +878,17 @@
     $("openAllBtn").addEventListener("click", () => document.querySelectorAll("details").forEach(d=>d.open=true));
     $("closeAllBtn").addEventListener("click", () => document.querySelectorAll("details").forEach(d=>d.open=false));
     $("clearAllBtn").addEventListener("click", () => {
-      ["jyInput","jyJsonOut","jyYamlOut","csvInput","mdOut","epochInput","b64Input","b64Out","diffA","diffB"].forEach(id => { if($(id)) $(id).value = ""; });
+      ["jyInput","jyJsonOut","jyYamlOut","csvInput","mdOut","epochInput","b64Input","b64Out","diffA","diffB","pwInput"].forEach(id => { if($(id)) $(id).value = ""; });
       $("diffOut").textContent = "";
       setStatus($("csvStatus"), "Ready.");
       setStatus($("epochStatus"), "Ready.");
       setStatus($("b64Status"), "Ready.");
       setStatus($("diffStatus"), "Ready.");
+      setStatus($("pwStatusBox"), "Ready.");
       $("epochLocal").textContent = "—";
       $("epochUtc").textContent = "—";
       $("epochAgo").textContent = "—";
+      resetPwUI();
     });
 
     document.querySelectorAll(".chip").forEach(ch => {
@@ -1041,6 +1164,244 @@
       $("diffOut").textContent = "";
       setStatus($("diffStatus"), "Ready.");
     });
+
+    // ---------- Password checker ----------
+    const COMMON_PATTERNS = [
+      /password/i, /qwerty/i, /letmein/i, /admin/i, /welcome/i, /iloveyou/i,
+      /12345/, /11111/, /00000/, /abc123/i
+    ];
+
+    function charSpace(pw){
+      let space = 0;
+      if(/[a-z]/.test(pw)) space += 26;
+      if(/[A-Z]/.test(pw)) space += 26;
+      if(/[0-9]/.test(pw)) space += 10;
+      // Rough symbol set (printable non-alnum)
+      if(/[^a-zA-Z0-9]/.test(pw)) space += 33;
+      // If password contains non-ASCII, treat as large (very rough)
+      if(/[^\x00-\x7F]/.test(pw)) space += 100;
+      return space;
+    }
+
+    function entropyBits(pw){
+      const space = Math.max(charSpace(pw), 1);
+      // bits = len * log2(space)
+      return pw.length * Math.log2(space);
+    }
+
+    function formatTime(seconds){
+      if(!Number.isFinite(seconds) || seconds <= 0) return "—";
+      const units = [
+        ["year", 60*60*24*365],
+        ["day", 60*60*24],
+        ["hour", 60*60],
+        ["minute", 60],
+        ["second", 1]
+      ];
+      for(const [name, s] of units){
+        const v = Math.floor(seconds / s);
+        if(v >= 2) return `${v} ${name}s`;
+        if(v === 1) return `1 ${name}`;
+      }
+      return "< 1 second";
+    }
+
+    function scoreLabel(score){
+      if(score < 20) return ["Very weak", "bad"];
+      if(score < 40) return ["Weak", "warn"];
+      if(score < 60) return ["Okay", "warn"];
+      if(score < 80) return ["Strong", "good"];
+      return ["Very strong", "good"];
+    }
+
+    function clamp(n,min,max){ return Math.min(max, Math.max(min,n)); }
+
+    function analyzePassword(pw){
+      const tips = [];
+      const len = pw.length;
+
+      if(len === 0){
+        return {
+          len: 0, space: 0, bits: 0, score: 0,
+          label: "—", kind: "", tips: ["Use 14+ characters.", "Mix upper/lowercase, numbers, symbols.", "Avoid reused or known-breached passwords."],
+          t10k: 0, t1b: 0, t100b: 0,
+          spaceLabel: "—"
+        };
+      }
+
+      const space = charSpace(pw);
+      const bits = entropyBits(pw);
+
+      // Basic penalties for common patterns / repeats
+      let penalty = 0;
+      if(/(.)\1\1/.test(pw)) { penalty += 8; tips.push("Avoid repeated characters (e.g., 'aaa')."); }
+      if(/^(?:1234|abcd|qwer)/i.test(pw)) { penalty += 10; tips.push("Avoid simple sequences (1234, abcd, qwerty...)."); }
+      if(COMMON_PATTERNS.some(rx => rx.test(pw))) { penalty += 12; tips.push("Avoid common words/patterns (password, admin, qwerty...)."); }
+      if(len < 14) tips.push("Use 14+ characters (length matters most).");
+      if(!/[A-Z]/.test(pw)) tips.push("Add uppercase letters.");
+      if(!/[a-z]/.test(pw)) tips.push("Add lowercase letters.");
+      if(!/[0-9]/.test(pw)) tips.push("Add numbers.");
+      if(!/[^a-zA-Z0-9]/.test(pw)) tips.push("Add symbols.");
+
+      // Score from entropy with penalties, mapped 0-100
+      let score = (bits / 1.1) - penalty; // heuristic scaling
+      score = clamp(Math.round(score), 0, 100);
+
+      // Crack time estimates:
+      // guesses needed ~ space^len / 2 -> in bits: 2^(bits-1)
+      // seconds = guesses / rate
+      const guesses = Math.pow(2, Math.max(bits - 1, 0));
+      const t10k = guesses / 1e4;
+      const t1b = guesses / 1e9;
+      const t100b = guesses / 1e11;
+
+      const [label, kind] = scoreLabel(score);
+
+      let spaceLabel = [];
+      if(/[a-z]/.test(pw)) spaceLabel.push("a-z");
+      if(/[A-Z]/.test(pw)) spaceLabel.push("A-Z");
+      if(/[0-9]/.test(pw)) spaceLabel.push("0-9");
+      if(/[^a-zA-Z0-9]/.test(pw)) spaceLabel.push("symbols");
+      if(/[^\x00-\x7F]/.test(pw)) spaceLabel.push("unicode");
+      spaceLabel = spaceLabel.join(" + ") || "—";
+
+      // De-duplicate tips, keep top few
+      const uniqTips = [...new Set(tips)].slice(0, 6);
+      if(uniqTips.length === 0) uniqTips.push("Looks good. Prefer unique passwords per site and a password manager.");
+
+      return { len, space, bits, score, label, kind, tips: uniqTips, t10k, t1b, t100b, spaceLabel };
+    }
+
+    function resetPwUI(){
+      $("pwScore").textContent = "—";
+      $("pwEntropy").textContent = "—";
+      $("pwCharset").textContent = "—";
+      $("pwLength").textContent = "—";
+      $("pwT10k").textContent = "—";
+      $("pwT1b").textContent = "—";
+      $("pwT100b").textContent = "—";
+      $("pwBadge").textContent = "—";
+      $("pwBarFill").style.width = "0%";
+      $("pwBarFill").style.background = "rgba(255,107,107,.9)";
+      $("pwTips").innerHTML = `
+        <li>Use 14+ characters.</li>
+        <li>Mix upper/lowercase, numbers, symbols.</li>
+        <li>Avoid reused or known-breached passwords.</li>
+      `;
+      $("pwStatus").textContent = "";
+    }
+
+    function updatePwUI(){
+      const pw = $("pwInput").value || "";
+      const r = analyzePassword(pw);
+
+      $("pwScore").textContent = String(r.score);
+      $("pwEntropy").textContent = r.bits ? r.bits.toFixed(1) : "0.0";
+      $("pwCharset").textContent = r.spaceLabel;
+      $("pwLength").textContent = String(r.len);
+      $("pwT10k").textContent = formatTime(r.t10k);
+      $("pwT1b").textContent = formatTime(r.t1b);
+      $("pwT100b").textContent = formatTime(r.t100b);
+
+      $("pwBadge").textContent = r.label;
+      $("pwBadge").style.borderColor =
+        r.kind === "good" ? "rgba(61,220,151,.45)" :
+        r.kind === "warn" ? "rgba(255,204,102,.55)" :
+        r.kind === "bad"  ? "rgba(255,107,107,.45)" :
+        "rgba(34,48,88,.85)";
+      $("pwBadge").style.color =
+        r.kind === "good" ? "rgba(61,220,151,.95)" :
+        r.kind === "warn" ? "rgba(255,204,102,.95)" :
+        r.kind === "bad"  ? "rgba(255,107,107,.95)" :
+        "rgba(170,182,214,.85)";
+
+      const pct = clamp(r.score, 0, 100);
+      $("pwBarFill").style.width = pct + "%";
+      $("pwBarFill").style.background =
+        r.kind === "good" ? "rgba(61,220,151,.9)" :
+        r.kind === "warn" ? "rgba(255,204,102,.9)" :
+        "rgba(255,107,107,.9)";
+
+      $("pwTips").innerHTML = r.tips.map(t => `<li>${t}</li>`).join("");
+      $("pwStatus").textContent = pw.length ? "(updates locally)" : "";
+      setStatus($("pwStatusBox"), pw.length ? "Analyzing locally. Nothing is uploaded." : "Ready.", pw.length ? "good" : "");
+    }
+
+    function generatePassword(){
+      // 18 chars, includes upper/lower/digits/symbols; avoids ambiguous chars a bit
+      const lower = "abcdefghjkmnpqrstuvwxyz";
+      const upper = "ABCDEFGHJKMNPQRSTUVWXYZ";
+      const digits = "23456789";
+      const symbols = "!@#$%^&*()-_=+[]{};:,.?";
+
+      const all = lower + upper + digits + symbols;
+      const pick = (s) => s[Math.floor(Math.random()*s.length)];
+
+      let pw = "";
+      // ensure variety
+      pw += pick(lower);
+      pw += pick(upper);
+      pw += pick(digits);
+      pw += pick(symbols);
+
+      for(let i=0;i<14;i++){
+        pw += pick(all);
+      }
+
+      // shuffle
+      const arr = pw.split("");
+      for(let i=arr.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr.join("");
+    }
+
+    let pwShown = false;
+
+    $("pwToggleBtn").addEventListener("click", () => {
+      pwShown = !pwShown;
+      $("pwInput").type = pwShown ? "text" : "password";
+      $("pwToggleBtn").textContent = pwShown ? "Hide" : "Show";
+    });
+
+    $("pwGenBtn").addEventListener("click", () => {
+      $("pwInput").value = generatePassword();
+      updatePwUI();
+    });
+
+    $("pwCopyBtn").addEventListener("click", async () => {
+      const pw = $("pwInput").value || "";
+      if(!pw){
+        setStatus($("pwStatusBox"), "Nothing to copy.", "warn");
+        return;
+      }
+      const ok = await copyText(pw);
+      setStatus($("pwStatusBox"), ok ? "Copied password to clipboard." : "Copy failed.", ok ? "good" : "bad");
+    });
+
+    $("pwClearBtn").addEventListener("click", () => {
+      $("pwInput").value = "";
+      resetPwUI();
+      setStatus($("pwStatusBox"), "Ready.");
+    });
+
+    $("pwInput").addEventListener("input", () => {
+      updatePwUI();
+    });
+
+    // ---------- Epoch live now ----------
+    function updateEpochNow(){
+      const now = Date.now();
+      $("epochNowS").textContent = String(Math.floor(now/1000));
+      $("epochNowMs").textContent = String(now);
+    }
+    updateEpochNow();
+    setInterval(updateEpochNow, 1000);
+
+    // Initialize password UI on load
+    resetPwUI();
   </script>
 </body>
 </html>
+```
