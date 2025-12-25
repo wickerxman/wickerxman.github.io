@@ -41,7 +41,7 @@
     "url":"https://www.spriteguide.com/",
     "applicationCategory":"DeveloperApplication",
     "operatingSystem":"Any",
-    "description":"Fast client-side utilities for sysadmins: JSON↔YAML, CSV→Markdown, epoch converter, Base64/URL encoder/decoder, quick text diff, and offline password strength checker. Nothing is uploaded.",
+    "description":"Fast client-side utilities for sysadmins: JSON↔YAML converter, CSV→Markdown, epoch converter, Base64/URL encoder/decoder, quick text diff, and offline password strength checker. Nothing is uploaded.",
     "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
   }
   </script>
@@ -660,14 +660,14 @@
                 <div class="pwgrid">
                   <div class="pwbox">
                     <div><b>Score:</b> <span id="pwScore">—</span><span class="badge" id="pwBadge">—</span></div>
-                    <div style="margin-top:6px;"><b>Entropy:</b> <span id="pwEntropy">—</span> bits</div>
+                    <div style="margin-top:6px;"><b>Estimate (bits):</b> <span id="pwEntropy">—</span></div>
                     <div style="margin-top:6px;"><b>Character set:</b> <span id="pwCharset">—</span></div>
                     <div style="margin-top:6px;"><b>Length:</b> <span id="pwLength">—</span></div>
                   </div>
 
                   <div class="pwbox">
                     <div><b>Estimated crack time</b></div>
-                    <div class="hint" style="margin-top:6px;">Assumes offline guessing on a fast attacker rig. Real-world varies.</div>
+                    <div class="hint" style="margin-top:6px;">Illustrative only. Depends on hashing + rate limits.</div>
                     <div style="margin-top:10px;"><b>10k guesses/sec:</b> <span id="pwT10k">—</span></div>
                     <div style="margin-top:6px;"><b>1B guesses/sec:</b> <span id="pwT1b">—</span></div>
                     <div style="margin-top:6px;"><b>100B guesses/sec:</b> <span id="pwT100b">—</span></div>
@@ -702,6 +702,9 @@
 
   <!-- YAML support (js-yaml). For offline/self-hosting: download and serve locally, then replace this script src. -->
   <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js" crossorigin="anonymous"></script>
+
+  <!-- Password estimation (zxcvbn) -->
+  <script src="https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js" crossorigin="anonymous"></script>
 
   <script>
     // ---------- Utilities ----------
@@ -1165,29 +1168,23 @@
       setStatus($("diffStatus"), "Ready.");
     });
 
-    // ---------- Password checker ----------
-    const COMMON_PATTERNS = [
-      /password/i, /qwerty/i, /letmein/i, /admin/i, /welcome/i, /iloveyou/i,
-      /12345/, /11111/, /00000/, /abc123/i
-    ];
-
+    // ---------- Password checker (zxcvbn-backed when available) ----------
     function charSpace(pw){
       let space = 0;
       if(/[a-z]/.test(pw)) space += 26;
       if(/[A-Z]/.test(pw)) space += 26;
       if(/[0-9]/.test(pw)) space += 10;
-      // Rough symbol set (printable non-alnum)
       if(/[^a-zA-Z0-9]/.test(pw)) space += 33;
-      // If password contains non-ASCII, treat as large (very rough)
       if(/[^\x00-\x7F]/.test(pw)) space += 100;
       return space;
     }
 
     function entropyBits(pw){
       const space = Math.max(charSpace(pw), 1);
-      // bits = len * log2(space)
       return pw.length * Math.log2(space);
     }
+
+    function clamp(n,min,max){ return Math.min(max, Math.max(min,n)); }
 
     function formatTime(seconds){
       if(!Number.isFinite(seconds) || seconds <= 0) return "—";
@@ -1214,64 +1211,6 @@
       return ["Very strong", "good"];
     }
 
-    function clamp(n,min,max){ return Math.min(max, Math.max(min,n)); }
-
-    function analyzePassword(pw){
-      const tips = [];
-      const len = pw.length;
-
-      if(len === 0){
-        return {
-          len: 0, space: 0, bits: 0, score: 0,
-          label: "—", kind: "", tips: ["Use 14+ characters.", "Mix upper/lowercase, numbers, symbols.", "Avoid reused or known-breached passwords."],
-          t10k: 0, t1b: 0, t100b: 0,
-          spaceLabel: "—"
-        };
-      }
-
-      const space = charSpace(pw);
-      const bits = entropyBits(pw);
-
-      // Basic penalties for common patterns / repeats
-      let penalty = 0;
-      if(/(.)\1\1/.test(pw)) { penalty += 8; tips.push("Avoid repeated characters (e.g., 'aaa')."); }
-      if(/^(?:1234|abcd|qwer)/i.test(pw)) { penalty += 10; tips.push("Avoid simple sequences (1234, abcd, qwerty...)."); }
-      if(COMMON_PATTERNS.some(rx => rx.test(pw))) { penalty += 12; tips.push("Avoid common words/patterns (password, admin, qwerty...)."); }
-      if(len < 14) tips.push("Use 14+ characters (length matters most).");
-      if(!/[A-Z]/.test(pw)) tips.push("Add uppercase letters.");
-      if(!/[a-z]/.test(pw)) tips.push("Add lowercase letters.");
-      if(!/[0-9]/.test(pw)) tips.push("Add numbers.");
-      if(!/[^a-zA-Z0-9]/.test(pw)) tips.push("Add symbols.");
-
-      // Score from entropy with penalties, mapped 0-100
-      let score = (bits / 1.1) - penalty; // heuristic scaling
-      score = clamp(Math.round(score), 0, 100);
-
-      // Crack time estimates:
-      // guesses needed ~ space^len / 2 -> in bits: 2^(bits-1)
-      // seconds = guesses / rate
-      const guesses = Math.pow(2, Math.max(bits - 1, 0));
-      const t10k = guesses / 1e4;
-      const t1b = guesses / 1e9;
-      const t100b = guesses / 1e11;
-
-      const [label, kind] = scoreLabel(score);
-
-      let spaceLabel = [];
-      if(/[a-z]/.test(pw)) spaceLabel.push("a-z");
-      if(/[A-Z]/.test(pw)) spaceLabel.push("A-Z");
-      if(/[0-9]/.test(pw)) spaceLabel.push("0-9");
-      if(/[^a-zA-Z0-9]/.test(pw)) spaceLabel.push("symbols");
-      if(/[^\x00-\x7F]/.test(pw)) spaceLabel.push("unicode");
-      spaceLabel = spaceLabel.join(" + ") || "—";
-
-      // De-duplicate tips, keep top few
-      const uniqTips = [...new Set(tips)].slice(0, 6);
-      if(uniqTips.length === 0) uniqTips.push("Looks good. Prefer unique passwords per site and a password manager.");
-
-      return { len, space, bits, score, label, kind, tips: uniqTips, t10k, t1b, t100b, spaceLabel };
-    }
-
     function resetPwUI(){
       $("pwScore").textContent = "—";
       $("pwEntropy").textContent = "—";
@@ -1291,6 +1230,95 @@
       $("pwStatus").textContent = "";
     }
 
+    function guessesToTimes(guesses){
+      const rates = {
+        "10k guesses/sec": 1e4,
+        "1B guesses/sec": 1e9,
+        "100B guesses/sec": 1e11
+      };
+      return {
+        t10k: guesses / rates["10k guesses/sec"],
+        t1b: guesses / rates["1B guesses/sec"],
+        t100b: guesses / rates["100B guesses/sec"]
+      };
+    }
+
+    function analyzePassword(pw){
+      const tips = [];
+      const len = pw.length;
+
+      if(len === 0){
+        return {
+          len: 0, bits: 0, score: 0,
+          label: "—", kind: "",
+          tips: ["Use 14+ characters.", "Mix upper/lowercase, numbers, symbols.", "Avoid reused or known-breached passwords."],
+          t10k: 0, t1b: 0, t100b: 0,
+          spaceLabel: "—"
+        };
+      }
+
+      if(typeof zxcvbn === "function"){
+        const z = zxcvbn(pw);
+        const score = clamp(Math.round((z.score / 4) * 100), 0, 100);
+        const [label, kind] = scoreLabel(score);
+
+        const { t10k, t1b, t100b } = guessesToTimes(Math.max(1, z.guesses));
+
+        const zTips = [];
+        if(z.feedback){
+          if(z.feedback.warning) zTips.push(z.feedback.warning);
+          if(Array.isArray(z.feedback.suggestions)) zTips.push(...z.feedback.suggestions);
+        }
+        zTips.push("Use a password manager + unique passwords per site.");
+        zTips.push("Prefer passphrases (4+ random words) over clever variations.");
+
+        let spaceLabel = [];
+        if(/[a-z]/.test(pw)) spaceLabel.push("a-z");
+        if(/[A-Z]/.test(pw)) spaceLabel.push("A-Z");
+        if(/[0-9]/.test(pw)) spaceLabel.push("0-9");
+        if(/[^a-zA-Z0-9]/.test(pw)) spaceLabel.push("symbols");
+        if(/[^\x00-\x7F]/.test(pw)) spaceLabel.push("unicode");
+        spaceLabel = spaceLabel.join(" + ") || "—";
+
+        const bits = Math.log2(Math.max(1, z.guesses));
+
+        return {
+          len, bits, score, label, kind,
+          tips: [...new Set(zTips)].slice(0, 6),
+          t10k, t1b, t100b,
+          spaceLabel
+        };
+      }
+
+      // fallback
+      const bits = entropyBits(pw);
+
+      if(len < 14) tips.push("Use 14+ characters (length matters most).");
+      if(!/[A-Z]/.test(pw)) tips.push("Add uppercase letters.");
+      if(!/[a-z]/.test(pw)) tips.push("Add lowercase letters.");
+      if(!/[0-9]/.test(pw)) tips.push("Add numbers.");
+      if(!/[^a-zA-Z0-9]/.test(pw)) tips.push("Add symbols.");
+
+      let score = clamp(Math.round(bits / 1.1), 0, 100);
+      const [label, kind] = scoreLabel(score);
+
+      const guesses = Math.pow(2, Math.max(bits - 1, 0));
+      const { t10k, t1b, t100b } = guessesToTimes(guesses);
+
+      let spaceLabel = [];
+      if(/[a-z]/.test(pw)) spaceLabel.push("a-z");
+      if(/[A-Z]/.test(pw)) spaceLabel.push("A-Z");
+      if(/[0-9]/.test(pw)) spaceLabel.push("0-9");
+      if(/[^a-zA-Z0-9]/.test(pw)) spaceLabel.push("symbols");
+      if(/[^\x00-\x7F]/.test(pw)) spaceLabel.push("unicode");
+      spaceLabel = spaceLabel.join(" + ") || "—";
+
+      const uniqTips = [...new Set(tips)].slice(0, 6);
+      if(uniqTips.length === 0) uniqTips.push("Looks good. Prefer unique passwords per site and a password manager.");
+
+      return { len, bits, score, label, kind, tips: uniqTips, t10k, t1b, t100b, spaceLabel };
+    }
+
     function updatePwUI(){
       const pw = $("pwInput").value || "";
       const r = analyzePassword(pw);
@@ -1299,6 +1327,7 @@
       $("pwEntropy").textContent = r.bits ? r.bits.toFixed(1) : "0.0";
       $("pwCharset").textContent = r.spaceLabel;
       $("pwLength").textContent = String(r.len);
+
       $("pwT10k").textContent = formatTime(r.t10k);
       $("pwT1b").textContent = formatTime(r.t1b);
       $("pwT100b").textContent = formatTime(r.t100b);
@@ -1322,13 +1351,12 @@
         r.kind === "warn" ? "rgba(255,204,102,.9)" :
         "rgba(255,107,107,.9)";
 
-      $("pwTips").innerHTML = r.tips.map(t => `<li>${t}</li>`).join("");
+      $("pwTips").innerHTML = (r.tips || []).map(t => `<li>${t}</li>`).join("");
       $("pwStatus").textContent = pw.length ? "(updates locally)" : "";
       setStatus($("pwStatusBox"), pw.length ? "Analyzing locally. Nothing is uploaded." : "Ready.", pw.length ? "good" : "");
     }
 
     function generatePassword(){
-      // 18 chars, includes upper/lower/digits/symbols; avoids ambiguous chars a bit
       const lower = "abcdefghjkmnpqrstuvwxyz";
       const upper = "ABCDEFGHJKMNPQRSTUVWXYZ";
       const digits = "23456789";
@@ -1338,17 +1366,13 @@
       const pick = (s) => s[Math.floor(Math.random()*s.length)];
 
       let pw = "";
-      // ensure variety
       pw += pick(lower);
       pw += pick(upper);
       pw += pick(digits);
       pw += pick(symbols);
 
-      for(let i=0;i<14;i++){
-        pw += pick(all);
-      }
+      for(let i=0;i<14;i++) pw += pick(all);
 
-      // shuffle
       const arr = pw.split("");
       for(let i=arr.length-1;i>0;i--){
         const j = Math.floor(Math.random()*(i+1));
@@ -1358,18 +1382,15 @@
     }
 
     let pwShown = false;
-
     $("pwToggleBtn").addEventListener("click", () => {
       pwShown = !pwShown;
       $("pwInput").type = pwShown ? "text" : "password";
       $("pwToggleBtn").textContent = pwShown ? "Hide" : "Show";
     });
-
     $("pwGenBtn").addEventListener("click", () => {
       $("pwInput").value = generatePassword();
       updatePwUI();
     });
-
     $("pwCopyBtn").addEventListener("click", async () => {
       const pw = $("pwInput").value || "";
       if(!pw){
@@ -1379,27 +1400,14 @@
       const ok = await copyText(pw);
       setStatus($("pwStatusBox"), ok ? "Copied password to clipboard." : "Copy failed.", ok ? "good" : "bad");
     });
-
     $("pwClearBtn").addEventListener("click", () => {
       $("pwInput").value = "";
       resetPwUI();
       setStatus($("pwStatusBox"), "Ready.");
     });
+    $("pwInput").addEventListener("input", updatePwUI);
 
-    $("pwInput").addEventListener("input", () => {
-      updatePwUI();
-    });
-
-    // ---------- Epoch live now ----------
-    function updateEpochNow(){
-      const now = Date.now();
-      $("epochNowS").textContent = String(Math.floor(now/1000));
-      $("epochNowMs").textContent = String(now);
-    }
-    updateEpochNow();
-    setInterval(updateEpochNow, 1000);
-
-    // Initialize password UI on load
+    // Init
     resetPwUI();
   </script>
 </body>
