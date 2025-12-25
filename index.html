@@ -3,8 +3,48 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SysAdmin Quick Tools</title>
-  <meta name="description" content="Client-side utilities for sysadmins. No data is uploaded." />
+
+  <!-- Primary SEO -->
+  <title>SysAdmin Quick Tools — JSON↔YAML, CSV→Markdown, Epoch, Base64, Diff</title>
+  <meta name="description" content="Fast client-side utilities for sysadmins: JSON↔YAML converter, CSV→Markdown table, epoch timestamp converter, Base64/URL encode-decode, and quick text diff. Nothing is uploaded." />
+  <link rel="canonical" href="https://www.spriteguide.com/" />
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <meta name="theme-color" content="#0b1020" />
+
+  <!-- Favicons (add these files later if you want) -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <!-- Open Graph / Social -->
+  <meta property="og:site_name" content="SysAdmin Quick Tools" />
+  <meta property="og:title" content="SysAdmin Quick Tools" />
+  <meta property="og:description" content="Client-side ops utilities: JSON↔YAML, CSV→Markdown, Epoch, Base64/URL, Diff. Nothing is uploaded." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.spriteguide.com/" />
+  <!-- Optional: add an image for sharing -->
+  <!-- <meta property="og:image" content="https://www.spriteguide.com/og.png" /> -->
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SysAdmin Quick Tools" />
+  <meta name="twitter:description" content="Client-side ops utilities: JSON↔YAML, CSV→Markdown, Epoch, Base64/URL, Diff. Nothing is uploaded." />
+  <!-- Optional: add an image for sharing -->
+  <!-- <meta name="twitter:image" content="https://www.spriteguide.com/og.png" /> -->
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"SysAdmin Quick Tools",
+    "url":"https://www.spriteguide.com/",
+    "applicationCategory":"DeveloperApplication",
+    "operatingSystem":"Any",
+    "description":"Fast client-side utilities for sysadmins: JSON↔YAML, CSV→Markdown, epoch converter, Base64/URL encoder/decoder, and quick text diff. Nothing is uploaded.",
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+  }
+  </script>
+
   <style>
     :root{
       --bg:#0b1020;
@@ -120,15 +160,10 @@
       gap:12px;
       align-items:stretch;
     }
-    .row.single{
-      grid-template-columns: 1fr;
-    }
-    .row.two{
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-    }
+    .row.single{grid-template-columns: 1fr;}
+    .row.two{grid-template-columns: 1fr 1fr;gap:12px;}
     @media (max-width: 900px){
-      .row{grid-template-columns:1fr; }
+      .row{grid-template-columns:1fr;}
       .arrow{display:none}
     }
     label{
@@ -162,9 +197,7 @@
       display:flex;gap:10px;flex-wrap:wrap;align-items:center;
       justify-content:space-between;
     }
-    .left-actions, .right-actions{
-      display:flex;gap:10px;flex-wrap:wrap;align-items:center;
-    }
+    .left-actions, .right-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
     .hint{font-size:12px;color:var(--muted)}
     .status{
       font-size:12px;color:var(--muted);
@@ -232,14 +265,27 @@
       user-select:none;
     }
     .chip:hover{border-color:#2f4279;color:var(--text)}
+    noscript{
+      display:block;
+      max-width:900px;
+      margin:12px auto 0;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,204,102,.45);
+      background:rgba(255,204,102,.08);
+      color:rgba(255,204,102,.95);
+      text-align:center;
+      font-size:13px;
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <header>
       <div class="title">
         <h1>SysAdmin Quick Tools</h1>
-        <div class="pill">Client-side utilities — no pasted data is uploaded.</div>
+        <div class="pill">Runs locally in your browser — nothing is uploaded.</div>
       </div>
       <div class="topbar">
         <button class="btn secondary small" id="openAllBtn" title="Expand all tools">Open all</button>
@@ -248,7 +294,13 @@
       </div>
     </header>
 
-    <div class="subhead">Essential tools for sysadmins — fast, local, and private.</div>
+    <noscript>
+      This page needs JavaScript to run the tools. Your pasted data still stays local — it’s just processed in-browser.
+    </noscript>
+
+    <div class="subhead">
+      Fast, private ops utilities for 2026: converters, timestamp tools, and quick diffs you can keep pinned.
+    </div>
 
     <div class="togglebar">
       <span class="chip" data-jump="jsonyaml">JSON ⇄ YAML</span>
@@ -273,6 +325,7 @@
             </div>
             <div class="chev">▾</div>
           </summary>
+
           <div class="content">
             <div class="row">
               <div>
@@ -304,7 +357,7 @@
                   </div>
                 </div>
 
-                <label style="margin-top:12px;">Y提醒AML Output</label>
+                <label style="margin-top:12px;">YAML Output</label>
                 <textarea id="jyYamlOut" placeholder="YAML output…" readonly></textarea>
                 <div class="actions">
                   <div class="left-actions">
@@ -317,7 +370,7 @@
               </div>
             </div>
 
-            <div class="adslot">[Ad slot placeholder — top/bottom banners work best on utility pages]</div>
+            <div class="adslot">[Ad slot placeholder — keep ads minimal and away from the textareas]</div>
           </div>
         </details>
       </div>
@@ -509,7 +562,7 @@
               <label>Differences (A vs B)</label>
               <div class="diffout" id="diffOut" aria-label="Diff output"></div>
               <div class="hint" style="margin-top:8px;">
-                Legend: <span style="color:var(--bad)">red</span> = only in A, <span style="color:var(--good)">green</span> = only in B, <span style="color:var(--warn)">yellow</span> = changed line.
+                Legend: red = only in A, green = only in B, yellow = changed line.
               </div>
             </div>
           </div>
@@ -519,12 +572,15 @@
     </div>
 
     <footer>
-      Tip: for an “always-open” admin page, keep it fast, keep it local, and resist the urge to add 40 tools.
+      <div>Privacy: everything runs locally in your browser. No uploads. No pasted-data storage.</div>
+      <div style="margin-top:6px;">
+        If you fork or mirror this, keep it lightweight — that’s the whole point.
+      </div>
     </footer>
   </div>
 
   <!-- YAML support (js-yaml). For offline/self-hosting: download and serve locally, then replace this script src. -->
-  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js" integrity="sha256-8mZq9cRj9vXW99gHkM+2q3CkGMSk4pW7gKxYV4Z8C8o=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js" crossorigin="anonymous"></script>
 
   <script>
     // ---------- Utilities ----------
@@ -541,7 +597,6 @@
         await navigator.clipboard.writeText(text);
         return true;
       }catch(e){
-        // Fallback
         const ta = document.createElement("textarea");
         ta.value = text;
         ta.style.position = "fixed";
@@ -558,7 +613,6 @@
       return String(s ?? "").replace(/\|/g, "\\|").replace(/\r?\n/g, " ");
     }
 
-    // CSV parsing (handles quotes, commas, newlines)
     function parseCSV(text){
       const rows = [];
       let row = [];
@@ -580,7 +634,6 @@
         if(ch === ","){ row.push(cur); cur=""; continue; }
         if(ch === "\n"){
           row.push(cur); cur="";
-          // ignore empty last row at end
           rows.push(row);
           row = [];
           continue;
@@ -590,11 +643,10 @@
         cur += ch;
       }
       row.push(cur);
-      // Avoid pushing a single empty row when input is empty
+
       if(!(row.length === 1 && row[0] === "" && rows.length === 0)){
         rows.push(row);
       }
-      // Trim trailing completely-empty rows
       while(rows.length && rows[rows.length-1].every(c => String(c).trim() === "")){
         rows.pop();
       }
@@ -620,7 +672,6 @@
       return [headerLine, sepLine, ...bodyLines].join("\n");
     }
 
-    // Base64 UTF-8 safe helpers
     function utf8ToB64(str){
       const bytes = new TextEncoder().encode(str);
       let bin = "";
@@ -656,7 +707,6 @@
       const s = String(input).trim();
       if(!/^-?\d+(\.\d+)?$/.test(s)) return null;
 
-      // If it has decimals, treat as seconds (common in logs)
       if(s.includes(".")){
         const sec = Number(s);
         if(!Number.isFinite(sec)) return null;
@@ -665,23 +715,14 @@
 
       const n = BigInt(s);
       const abs = n < 0n ? -n : n;
-
-      // Heuristic based on digit length:
-      // 10 digits -> seconds
-      // 13 digits -> ms
-      // 16+ digits -> ns (or us)
       const len = abs.toString().length;
 
-      if(len <= 10) return Number(n) * 1000;                     // seconds
-      if(len <= 13) return Number(n);                            // ms
-      if(len <= 16) return Number(n / 1000n);                    // microseconds -> ms
-      return Number(n / 1000000n);                               // nanoseconds -> ms
+      if(len <= 10) return Number(n) * 1000;         // seconds
+      if(len <= 13) return Number(n);                // ms
+      if(len <= 16) return Number(n / 1000n);        // microseconds -> ms
+      return Number(n / 1000000n);                   // nanoseconds -> ms
     }
 
-    // Simple line diff (not LCS) but useful:
-    // - marks exact same lines
-    // - marks changed when same index differs
-    // - marks extras in A/B
     function renderLineDiff(aText, bText){
       const a = aText.replace(/\r\n/g,"\n").split("\n");
       const b = bText.replace(/\r\n/g,"\n").split("\n");
@@ -716,7 +757,6 @@
     $("openAllBtn").addEventListener("click", () => document.querySelectorAll("details").forEach(d=>d.open=true));
     $("closeAllBtn").addEventListener("click", () => document.querySelectorAll("details").forEach(d=>d.open=false));
     $("clearAllBtn").addEventListener("click", () => {
-      // Clear inputs/outputs across tools
       ["jyInput","jyJsonOut","jyYamlOut","csvInput","mdOut","epochInput","b64Input","b64Out","diffA","diffB"].forEach(id => { if($(id)) $(id).value = ""; });
       $("diffOut").textContent = "";
       setStatus($("csvStatus"), "Ready.");
@@ -728,7 +768,6 @@
       $("epochAgo").textContent = "—";
     });
 
-    // Jump chips
     document.querySelectorAll(".chip").forEach(ch => {
       ch.addEventListener("click", () => {
         const id = ch.getAttribute("data-jump");
@@ -737,30 +776,31 @@
       });
     });
 
-    // Copy buttons (textarea)
     document.querySelectorAll("[data-copy]").forEach(btn => {
       btn.addEventListener("click", async () => {
         const id = btn.getAttribute("data-copy");
         const el = $(id);
         const ok = await copyText(el.value || "");
+        const prev = btn.textContent;
         btn.textContent = ok ? "Copied" : "Copy failed";
-        setTimeout(()=> btn.textContent = "Copy", 900);
+        setTimeout(()=> btn.textContent = prev, 900);
       });
     });
-    // Copy buttons (span text)
+
     document.querySelectorAll("[data-copytext]").forEach(btn => {
       btn.addEventListener("click", async () => {
         const id = btn.getAttribute("data-copytext");
         const el = $(id);
         const ok = await copyText(el.textContent || "");
+        const prev = btn.textContent;
         btn.textContent = ok ? "Copied" : "Copy failed";
-        setTimeout(()=> btn.textContent = btn.textContent.includes("ms") ? "Copy ms" : (id.endsWith("S") ? "Copy s" : "Copy"), 900);
+        setTimeout(()=> btn.textContent = prev, 900);
       });
     });
 
     // ---------- JSON/YAML ----------
     const jyStatusEl = $("jyStatus");
-    function setJYStatus(msg, kind){ jyStatusEl.textContent = msg ? `(${msg})` : ""; }
+    function setJYStatus(msg){ jyStatusEl.textContent = msg ? `(${msg})` : ""; }
 
     function isLikelyJSON(s){
       const t = s.trim();
@@ -772,7 +812,7 @@
       $("jyJsonOut").value = "";
       $("jyYamlOut").value = "";
       if(!input){
-        setJYStatus("paste something", "warn");
+        setJYStatus("paste something");
         return;
       }
 
@@ -781,22 +821,21 @@
         let mode = "";
         if(isLikelyJSON(input)){
           obj = JSON.parse(input);
-          mode = "json";
+          mode = "parsed JSON";
         } else {
           if(typeof jsyaml === "undefined"){
             throw new Error("YAML library not loaded (js-yaml).");
           }
           obj = jsyaml.load(input);
-          mode = "yaml";
+          mode = "parsed YAML";
         }
 
         $("jyJsonOut").value = JSON.stringify(obj, null, 2);
-        if(typeof jsyaml !== "undefined"){
-          $("jyYamlOut").value = jsyaml.dump(obj, { noRefs:true, lineWidth: 120 });
-        } else {
-          $("jyYamlOut").value = "YAML support not loaded.";
-        }
-        setJYStatus(mode === "json" ? "parsed JSON" : "parsed YAML");
+        $("jyYamlOut").value = (typeof jsyaml !== "undefined")
+          ? jsyaml.dump(obj, { noRefs:true, lineWidth: 120 })
+          : "YAML support not loaded.";
+
+        setJYStatus(mode);
       }catch(e){
         setJYStatus(`error: ${e.message}`);
       }
@@ -810,7 +849,7 @@
       try{
         const obj = JSON.parse(v);
         $("jyInput").value = JSON.stringify(obj, null, 2);
-        setJYStatus("pretty");
+        setJYStatus("pretty JSON");
       }catch(e){
         setJYStatus("not valid JSON");
       }
@@ -822,7 +861,7 @@
       try{
         const obj = JSON.parse(v);
         $("jyInput").value = JSON.stringify(obj);
-        setJYStatus("minified");
+        setJYStatus("minified JSON");
       }catch(e){
         setJYStatus("not valid JSON");
       }
@@ -835,7 +874,6 @@
       setJYStatus("");
     });
 
-    // Quick auto-convert as you type (debounced)
     let jyTimer = null;
     $("jyInput").addEventListener("input", () => {
       clearTimeout(jyTimer);
@@ -903,9 +941,8 @@
       $("epochUtc").textContent = d.toUTCString();
       $("epochAgo").textContent = humanAgo(Date.now() - ms);
 
-      // Detection message
       const len = String(v.replace(/[^0-9]/g,"")).length;
-      let kind = "ms";
+      let kind = "milliseconds";
       if(len <= 10) kind = "seconds";
       else if(len <= 13) kind = "milliseconds";
       else if(len <= 16) kind = "microseconds";
