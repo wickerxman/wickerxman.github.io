@@ -1,0 +1,1009 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SysAdmin Quick Tools</title>
+  <meta name="description" content="Client-side utilities for sysadmins. No data is uploaded." />
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#101a33;
+      --panel2:#0f1730;
+      --border:#223058;
+      --text:#d7def0;
+      --muted:#aab6d6;
+      --accent:#7aa2ff;
+      --good:#3ddc97;
+      --warn:#ffcc66;
+      --bad:#ff6b6b;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 14px;
+      --radius2: 10px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background: radial-gradient(1200px 700px at 20% 0%, rgba(122,162,255,.20), transparent 60%),
+                  radial-gradient(900px 600px at 85% 20%, rgba(61,220,151,.12), transparent 55%),
+                  var(--bg);
+      line-height:1.35;
+    }
+    a{color:var(--accent); text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:22px 16px 50px}
+    header{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:12px;flex-wrap:wrap;margin-bottom:14px;
+    }
+    .title{
+      display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+    }
+    h1{font-size:22px;margin:0;font-weight:700;letter-spacing:.2px}
+    .pill{
+      font-size:12px;color:var(--muted);
+      border:1px solid var(--border);
+      background:rgba(16,26,51,.55);
+      padding:6px 10px;border-radius:999px;
+    }
+    .subhead{
+      margin:10px 0 18px;
+      color:var(--muted);
+      text-align:center;
+    }
+    .topbar{
+      display:flex;gap:10px;align-items:center;justify-content:flex-end;
+    }
+    .btn{
+      appearance:none;border:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(122,162,255,.14), rgba(122,162,255,.06));
+      color:var(--text);
+      padding:9px 12px;border-radius:10px;
+      cursor:pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,.18);
+      font-weight:600;
+      transition:transform .06s ease, border-color .2s ease;
+    }
+    .btn:hover{border-color:#2f4279}
+    .btn:active{transform:translateY(1px)}
+    .btn.secondary{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    }
+    .btn.small{padding:7px 10px;font-size:12px;border-radius:9px}
+    .btn.good{background:linear-gradient(180deg, rgba(61,220,151,.18), rgba(61,220,151,.06))}
+    .btn.warn{background:linear-gradient(180deg, rgba(255,204,102,.16), rgba(255,204,102,.06))}
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(16,26,51,.85), rgba(15,23,48,.85));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    details{border-radius:var(--radius)}
+    summary{
+      list-style:none;
+      display:flex;align-items:center;justify-content:space-between;
+      gap:14px;
+      padding:14px 16px;
+      cursor:pointer;
+      user-select:none;
+      border-bottom:1px solid rgba(34,48,88,.65);
+      background:rgba(10,16,32,.25);
+    }
+    summary::-webkit-details-marker{display:none}
+    .sum-left{display:flex;align-items:center;gap:10px}
+    .icon{
+      width:28px;height:28px;border-radius:9px;
+      display:grid;place-items:center;
+      border:1px solid rgba(122,162,255,.25);
+      background:rgba(122,162,255,.10);
+      font-weight:800;
+      color:var(--accent);
+      font-family:var(--mono);
+      font-size:13px;
+    }
+    .sum-title{font-weight:800}
+    .chev{opacity:.7}
+    details[open] .chev{transform:rotate(180deg)}
+    .content{padding:14px 16px 16px}
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 44px 1fr;
+      gap:12px;
+      align-items:stretch;
+    }
+    .row.single{
+      grid-template-columns: 1fr;
+    }
+    .row.two{
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 900px){
+      .row{grid-template-columns:1fr; }
+      .arrow{display:none}
+    }
+    label{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:10px;
+      margin:0 0 8px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    textarea, input[type="text"]{
+      width:100%;
+      border:1px solid rgba(34,48,88,.85);
+      background:rgba(8,12,25,.55);
+      color:var(--text);
+      border-radius:12px;
+      padding:12px;
+      font-family:var(--mono);
+      font-size:13px;
+      outline:none;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.15);
+    }
+    textarea{min-height:170px;resize:vertical}
+    .arrow{
+      display:grid;place-items:center;
+      color:rgba(215,222,240,.35);
+      font-size:28px;
+      user-select:none;
+    }
+    .actions{
+      margin-top:10px;
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+      justify-content:space-between;
+    }
+    .left-actions, .right-actions{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+    }
+    .hint{font-size:12px;color:var(--muted)}
+    .status{
+      font-size:12px;color:var(--muted);
+      padding:8px 10px;border:1px dashed rgba(34,48,88,.85);
+      border-radius:10px;background:rgba(8,12,25,.35);
+    }
+    .status.good{border-color:rgba(61,220,151,.45); color:rgba(61,220,151,.95)}
+    .status.bad{border-color:rgba(255,107,107,.45); color:rgba(255,107,107,.95)}
+    .status.warn{border-color:rgba(255,204,102,.55); color:rgba(255,204,102,.95)}
+    .adslot{
+      margin:16px 0 0;
+      border:1px dashed rgba(34,48,88,.75);
+      border-radius:12px;
+      padding:12px;
+      color:rgba(170,182,214,.75);
+      font-size:12px;
+      text-align:center;
+      background:rgba(8,12,25,.25);
+    }
+    .mini{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 700px){
+      .mini{grid-template-columns:1fr}
+    }
+    .kpi{
+      border:1px solid rgba(34,48,88,.85);
+      background:rgba(8,12,25,.35);
+      border-radius:12px;padding:12px;
+      font-family:var(--mono);
+    }
+    .kpi b{font-family:var(--sans)}
+    .diffout{
+      border:1px solid rgba(34,48,88,.85);
+      background:rgba(8,12,25,.35);
+      border-radius:12px;padding:12px;
+      font-family:var(--mono);
+      white-space:pre-wrap;
+      min-height:120px;
+      overflow:auto;
+    }
+    .line{display:block;padding:1px 6px;border-radius:8px;margin:0 0 2px}
+    .line.same{color:rgba(215,222,240,.75)}
+    .line.diff{background:rgba(255,204,102,.12); outline:1px solid rgba(255,204,102,.25)}
+    .line.onlyA{background:rgba(255,107,107,.10); outline:1px solid rgba(255,107,107,.22)}
+    .line.onlyB{background:rgba(61,220,151,.10); outline:1px solid rgba(61,220,151,.22)}
+    footer{
+      margin-top:18px;
+      color:rgba(170,182,214,.75);
+      font-size:12px;
+      text-align:center;
+    }
+    .togglebar{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;
+      margin:12px 0 0;
+    }
+    .chip{
+      border:1px solid rgba(34,48,88,.85);
+      background:rgba(8,12,25,.35);
+      color:var(--muted);
+      padding:7px 10px;border-radius:999px;
+      font-size:12px;cursor:pointer;
+      user-select:none;
+    }
+    .chip:hover{border-color:#2f4279;color:var(--text)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>SysAdmin Quick Tools</h1>
+        <div class="pill">Client-side utilities — no pasted data is uploaded.</div>
+      </div>
+      <div class="topbar">
+        <button class="btn secondary small" id="openAllBtn" title="Expand all tools">Open all</button>
+        <button class="btn secondary small" id="closeAllBtn" title="Collapse all tools">Close all</button>
+        <button class="btn secondary small" id="clearAllBtn" title="Clear all fields">Clear all</button>
+      </div>
+    </header>
+
+    <div class="subhead">Essential tools for sysadmins — fast, local, and private.</div>
+
+    <div class="togglebar">
+      <span class="chip" data-jump="jsonyaml">JSON ⇄ YAML</span>
+      <span class="chip" data-jump="csvmd">CSV → Markdown</span>
+      <span class="chip" data-jump="epoch">Epoch</span>
+      <span class="chip" data-jump="b64">Base64 / URL</span>
+      <span class="chip" data-jump="diff">Diff</span>
+    </div>
+
+    <div class="grid">
+
+      <!-- JSON <-> YAML -->
+      <div class="card" id="jsonyaml">
+        <details open>
+          <summary>
+            <div class="sum-left">
+              <div class="icon">{}</div>
+              <div>
+                <div class="sum-title">JSON ⇄ YAML Converter</div>
+                <div class="hint">Auto-detect input. Pretty JSON + YAML output. Highlights parse errors.</div>
+              </div>
+            </div>
+            <div class="chev">▾</div>
+          </summary>
+          <div class="content">
+            <div class="row">
+              <div>
+                <label>Paste JSON or YAML here… <span class="hint" id="jyStatus"></span></label>
+                <textarea id="jyInput" placeholder='{"hello":"world"}&#10;or&#10;hello: world'></textarea>
+                <div class="actions">
+                  <div class="left-actions">
+                    <button class="btn good" id="jyConvertBtn">Convert</button>
+                    <button class="btn secondary" id="jyPrettyBtn" title="Format as pretty JSON (if JSON)">Pretty JSON</button>
+                    <button class="btn secondary" id="jyMinifyBtn" title="Minify JSON (if JSON)">Minify JSON</button>
+                  </div>
+                  <div class="right-actions">
+                    <button class="btn secondary" id="jyClearBtn">Clear</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="arrow">»</div>
+
+              <div>
+                <label>Formatted JSON</label>
+                <textarea id="jyJsonOut" placeholder="Formatted JSON output…" readonly></textarea>
+                <div class="actions">
+                  <div class="left-actions">
+                    <button class="btn small secondary" data-copy="jyJsonOut">Copy</button>
+                  </div>
+                  <div class="right-actions">
+                    <span class="hint">Readonly</span>
+                  </div>
+                </div>
+
+                <label style="margin-top:12px;">Y提醒AML Output</label>
+                <textarea id="jyYamlOut" placeholder="YAML output…" readonly></textarea>
+                <div class="actions">
+                  <div class="left-actions">
+                    <button class="btn small secondary" data-copy="jyYamlOut">Copy</button>
+                  </div>
+                  <div class="right-actions">
+                    <span class="hint">Readonly</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="adslot">[Ad slot placeholder — top/bottom banners work best on utility pages]</div>
+          </div>
+        </details>
+      </div>
+
+      <!-- CSV -> Markdown -->
+      <div class="card" id="csvmd">
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon">CSV</div>
+              <div>
+                <div class="sum-title">CSV → Markdown Table</div>
+                <div class="hint">Paste CSV. Outputs GitHub/Obsidian-ready Markdown table.</div>
+              </div>
+            </div>
+            <div class="chev">▾</div>
+          </summary>
+          <div class="content">
+            <div class="row">
+              <div>
+                <label>Paste CSV data…</label>
+                <textarea id="csvInput" placeholder='name,role&#10;Alice,Admin&#10;Bob,Helpdesk'></textarea>
+                <div class="actions">
+                  <div class="left-actions">
+                    <button class="btn good" id="csvConvertBtn">Convert to Markdown</button>
+                    <button class="btn secondary" id="csvSampleBtn">Sample</button>
+                  </div>
+                  <div class="right-actions">
+                    <label class="hint" style="margin:0;">
+                      <input type="checkbox" id="csvHasHeader" checked style="transform:translateY(1px);"> Header row
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="arrow">»</div>
+
+              <div>
+                <label>Markdown Table Output</label>
+                <textarea id="mdOut" placeholder="Markdown table output…" readonly></textarea>
+                <div class="actions">
+                  <div class="left-actions">
+                    <button class="btn small secondary" data-copy="mdOut">Copy</button>
+                  </div>
+                  <div class="right-actions">
+                    <button class="btn secondary" id="csvClearBtn">Clear</button>
+                  </div>
+                </div>
+                <div class="status" id="csvStatus">Ready.</div>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <!-- Epoch -->
+      <div class="card" id="epoch">
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon">⏱</div>
+              <div>
+                <div class="sum-title">Epoch / Timestamp Converter</div>
+                <div class="hint">Auto-detect seconds / ms / ns. Shows Local + UTC + relative.</div>
+              </div>
+            </div>
+            <div class="chev">▾</div>
+          </summary>
+          <div class="content">
+            <div class="row single">
+              <div class="mini">
+                <div>
+                  <label>Enter timestamp (epoch seconds / ms / ns)</label>
+                  <input type="text" id="epochInput" placeholder="e.g. 1735352529 or 1735352529000" />
+                  <div class="actions">
+                    <div class="left-actions">
+                      <button class="btn good" id="epochConvertBtn">Convert</button>
+                      <button class="btn secondary" id="epochNowBtn">Use now</button>
+                    </div>
+                    <div class="right-actions">
+                      <button class="btn secondary" id="epochClearBtn">Clear</button>
+                    </div>
+                  </div>
+                  <div class="status" id="epochStatus">Ready.</div>
+                </div>
+
+                <div class="kpi">
+                  <div><b>Local:</b> <span id="epochLocal">—</span></div>
+                  <div><b>UTC:</b> <span id="epochUtc">—</span></div>
+                  <div><b>Elapsed:</b> <span id="epochAgo">—</span></div>
+                  <hr style="border:0;border-top:1px solid rgba(34,48,88,.6);margin:10px 0;">
+                  <div><b>Current epoch (s):</b> <span id="epochNowS">—</span></div>
+                  <div><b>Current epoch (ms):</b> <span id="epochNowMs">—</span></div>
+                  <div style="margin-top:8px;">
+                    <button class="btn small secondary" data-copytext="epochNowS">Copy s</button>
+                    <button class="btn small secondary" data-copytext="epochNowMs">Copy ms</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <!-- Base64 / URL -->
+      <div class="card" id="b64">
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon">b64</div>
+              <div>
+                <div class="sum-title">Base64 / URL Encoder & Decoder</div>
+                <div class="hint">UTF-8 safe. Handy for headers, tokens, and quick debugging.</div>
+              </div>
+            </div>
+            <div class="chev">▾</div>
+          </summary>
+          <div class="content">
+            <div class="row">
+              <div>
+                <label>Encode / decode text…</label>
+                <textarea id="b64Input" placeholder="Paste text here…"></textarea>
+                <div class="actions">
+                  <div class="left-actions">
+                    <button class="btn good" id="b64EncodeBtn">Base64 Encode</button>
+                    <button class="btn warn" id="b64DecodeBtn">Base64 Decode</button>
+                    <button class="btn secondary" id="urlEncodeBtn">URL Encode</button>
+                    <button class="btn secondary" id="urlDecodeBtn">URL Decode</button>
+                  </div>
+                  <div class="right-actions">
+                    <button class="btn secondary" id="b64ClearBtn">Clear</button>
+                  </div>
+                </div>
+                <div class="status" id="b64Status">Ready.</div>
+              </div>
+
+              <div class="arrow">»</div>
+
+              <div>
+                <label>Result</label>
+                <textarea id="b64Out" placeholder="Result…" readonly></textarea>
+                <div class="actions">
+                  <div class="left-actions">
+                    <button class="btn small secondary" data-copy="b64Out">Copy</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <!-- Diff -->
+      <div class="card" id="diff">
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon">≠</div>
+              <div>
+                <div class="sum-title">Text Diff (quick)</div>
+                <div class="hint">Line-based comparison for configs and snippets.</div>
+              </div>
+            </div>
+            <div class="chev">▾</div>
+          </summary>
+          <div class="content">
+            <div class="row two">
+              <div>
+                <label>Text A</label>
+                <textarea id="diffA" placeholder="Paste text A…"></textarea>
+              </div>
+              <div>
+                <label>Text B</label>
+                <textarea id="diffB" placeholder="Paste text B…"></textarea>
+              </div>
+            </div>
+            <div class="actions" style="margin-top:12px;">
+              <div class="left-actions">
+                <button class="btn good" id="diffBtn">Compare</button>
+                <button class="btn secondary" id="diffSwapBtn">Swap A/B</button>
+              </div>
+              <div class="right-actions">
+                <button class="btn secondary" id="diffClearBtn">Clear</button>
+              </div>
+            </div>
+            <div class="status" id="diffStatus">Ready.</div>
+
+            <div style="margin-top:12px;">
+              <label>Differences (A vs B)</label>
+              <div class="diffout" id="diffOut" aria-label="Diff output"></div>
+              <div class="hint" style="margin-top:8px;">
+                Legend: <span style="color:var(--bad)">red</span> = only in A, <span style="color:var(--good)">green</span> = only in B, <span style="color:var(--warn)">yellow</span> = changed line.
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+    </div>
+
+    <footer>
+      Tip: for an “always-open” admin page, keep it fast, keep it local, and resist the urge to add 40 tools.
+    </footer>
+  </div>
+
+  <!-- YAML support (js-yaml). For offline/self-hosting: download and serve locally, then replace this script src. -->
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js" integrity="sha256-8mZq9cRj9vXW99gHkM+2q3CkGMSk4pW7gKxYV4Z8C8o=" crossorigin="anonymous"></script>
+
+  <script>
+    // ---------- Utilities ----------
+    const $ = (id) => document.getElementById(id);
+
+    function setStatus(el, msg, kind=""){
+      el.textContent = msg;
+      el.classList.remove("good","bad","warn");
+      if(kind) el.classList.add(kind);
+    }
+
+    async function copyText(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        return true;
+      }catch(e){
+        // Fallback
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return ok;
+      }
+    }
+
+    function escapePipes(s){
+      return String(s ?? "").replace(/\|/g, "\\|").replace(/\r?\n/g, " ");
+    }
+
+    // CSV parsing (handles quotes, commas, newlines)
+    function parseCSV(text){
+      const rows = [];
+      let row = [];
+      let cur = "";
+      let inQuotes = false;
+
+      for(let i=0;i<text.length;i++){
+        const ch = text[i];
+        const next = text[i+1];
+
+        if(inQuotes){
+          if(ch === '"' && next === '"'){ cur += '"'; i++; continue; }
+          if(ch === '"'){ inQuotes = false; continue; }
+          cur += ch;
+          continue;
+        }
+
+        if(ch === '"'){ inQuotes = true; continue; }
+        if(ch === ","){ row.push(cur); cur=""; continue; }
+        if(ch === "\n"){
+          row.push(cur); cur="";
+          // ignore empty last row at end
+          rows.push(row);
+          row = [];
+          continue;
+        }
+        if(ch === "\r"){ continue; }
+
+        cur += ch;
+      }
+      row.push(cur);
+      // Avoid pushing a single empty row when input is empty
+      if(!(row.length === 1 && row[0] === "" && rows.length === 0)){
+        rows.push(row);
+      }
+      // Trim trailing completely-empty rows
+      while(rows.length && rows[rows.length-1].every(c => String(c).trim() === "")){
+        rows.pop();
+      }
+      return rows;
+    }
+
+    function csvToMarkdown(rows, hasHeader=true){
+      if(!rows.length) return "";
+      const colCount = Math.max(...rows.map(r => r.length));
+      const norm = rows.map(r => {
+        const rr = r.slice();
+        while(rr.length < colCount) rr.push("");
+        return rr;
+      });
+
+      const header = hasHeader ? norm[0] : Array.from({length: colCount}, (_,i)=>`col${i+1}`);
+      const body = hasHeader ? norm.slice(1) : norm;
+
+      const headerLine = `| ${header.map(escapePipes).join(" | ")} |`;
+      const sepLine = `| ${header.map(()=> "---").join(" | ")} |`;
+      const bodyLines = body.map(r => `| ${r.map(escapePipes).join(" | ")} |`);
+
+      return [headerLine, sepLine, ...bodyLines].join("\n");
+    }
+
+    // Base64 UTF-8 safe helpers
+    function utf8ToB64(str){
+      const bytes = new TextEncoder().encode(str);
+      let bin = "";
+      bytes.forEach(b => bin += String.fromCharCode(b));
+      return btoa(bin);
+    }
+    function b64ToUtf8(b64){
+      const bin = atob(b64);
+      const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+      return new TextDecoder().decode(bytes);
+    }
+
+    function humanAgo(msDelta){
+      const past = msDelta >= 0;
+      const ms = Math.abs(msDelta);
+      const sec = Math.floor(ms/1000);
+      if(sec < 5) return past ? "just now" : "in a moment";
+      const mins = Math.floor(sec/60);
+      const hrs  = Math.floor(mins/60);
+      const days = Math.floor(hrs/24);
+
+      const fmt = (n,u) => `${n} ${u}${n===1?"":"s"}`;
+      let out = "";
+      if(days>0) out = fmt(days,"day");
+      else if(hrs>0) out = fmt(hrs,"hour");
+      else if(mins>0) out = fmt(mins,"minute");
+      else out = fmt(sec,"second");
+
+      return past ? `${out} ago` : `in ${out}`;
+    }
+
+    function detectEpochToMs(input){
+      const s = String(input).trim();
+      if(!/^-?\d+(\.\d+)?$/.test(s)) return null;
+
+      // If it has decimals, treat as seconds (common in logs)
+      if(s.includes(".")){
+        const sec = Number(s);
+        if(!Number.isFinite(sec)) return null;
+        return Math.round(sec * 1000);
+      }
+
+      const n = BigInt(s);
+      const abs = n < 0n ? -n : n;
+
+      // Heuristic based on digit length:
+      // 10 digits -> seconds
+      // 13 digits -> ms
+      // 16+ digits -> ns (or us)
+      const len = abs.toString().length;
+
+      if(len <= 10) return Number(n) * 1000;                     // seconds
+      if(len <= 13) return Number(n);                            // ms
+      if(len <= 16) return Number(n / 1000n);                    // microseconds -> ms
+      return Number(n / 1000000n);                               // nanoseconds -> ms
+    }
+
+    // Simple line diff (not LCS) but useful:
+    // - marks exact same lines
+    // - marks changed when same index differs
+    // - marks extras in A/B
+    function renderLineDiff(aText, bText){
+      const a = aText.replace(/\r\n/g,"\n").split("\n");
+      const b = bText.replace(/\r\n/g,"\n").split("\n");
+      const max = Math.max(a.length, b.length);
+      const frag = document.createDocumentFragment();
+
+      for(let i=0;i<max;i++){
+        const la = a[i];
+        const lb = b[i];
+        const el = document.createElement("span");
+        el.className = "line";
+
+        if(la === undefined){
+          el.classList.add("onlyB");
+          el.textContent = `+ [B] ${lb}`;
+        } else if(lb === undefined){
+          el.classList.add("onlyA");
+          el.textContent = `- [A] ${la}`;
+        } else if(la === lb){
+          el.classList.add("same");
+          el.textContent = `  ${la}`;
+        } else {
+          el.classList.add("diff");
+          el.textContent = `~ [A] ${la}\n~ [B] ${lb}`;
+        }
+        frag.appendChild(el);
+      }
+      return frag;
+    }
+
+    // ---------- Global buttons ----------
+    $("openAllBtn").addEventListener("click", () => document.querySelectorAll("details").forEach(d=>d.open=true));
+    $("closeAllBtn").addEventListener("click", () => document.querySelectorAll("details").forEach(d=>d.open=false));
+    $("clearAllBtn").addEventListener("click", () => {
+      // Clear inputs/outputs across tools
+      ["jyInput","jyJsonOut","jyYamlOut","csvInput","mdOut","epochInput","b64Input","b64Out","diffA","diffB"].forEach(id => { if($(id)) $(id).value = ""; });
+      $("diffOut").textContent = "";
+      setStatus($("csvStatus"), "Ready.");
+      setStatus($("epochStatus"), "Ready.");
+      setStatus($("b64Status"), "Ready.");
+      setStatus($("diffStatus"), "Ready.");
+      $("epochLocal").textContent = "—";
+      $("epochUtc").textContent = "—";
+      $("epochAgo").textContent = "—";
+    });
+
+    // Jump chips
+    document.querySelectorAll(".chip").forEach(ch => {
+      ch.addEventListener("click", () => {
+        const id = ch.getAttribute("data-jump");
+        const el = document.getElementById(id);
+        if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+      });
+    });
+
+    // Copy buttons (textarea)
+    document.querySelectorAll("[data-copy]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.getAttribute("data-copy");
+        const el = $(id);
+        const ok = await copyText(el.value || "");
+        btn.textContent = ok ? "Copied" : "Copy failed";
+        setTimeout(()=> btn.textContent = "Copy", 900);
+      });
+    });
+    // Copy buttons (span text)
+    document.querySelectorAll("[data-copytext]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.getAttribute("data-copytext");
+        const el = $(id);
+        const ok = await copyText(el.textContent || "");
+        btn.textContent = ok ? "Copied" : "Copy failed";
+        setTimeout(()=> btn.textContent = btn.textContent.includes("ms") ? "Copy ms" : (id.endsWith("S") ? "Copy s" : "Copy"), 900);
+      });
+    });
+
+    // ---------- JSON/YAML ----------
+    const jyStatusEl = $("jyStatus");
+    function setJYStatus(msg, kind){ jyStatusEl.textContent = msg ? `(${msg})` : ""; }
+
+    function isLikelyJSON(s){
+      const t = s.trim();
+      return t.startsWith("{") || t.startsWith("[");
+    }
+
+    function convertJsonYaml(){
+      const input = $("jyInput").value.trim();
+      $("jyJsonOut").value = "";
+      $("jyYamlOut").value = "";
+      if(!input){
+        setJYStatus("paste something", "warn");
+        return;
+      }
+
+      try{
+        let obj;
+        let mode = "";
+        if(isLikelyJSON(input)){
+          obj = JSON.parse(input);
+          mode = "json";
+        } else {
+          if(typeof jsyaml === "undefined"){
+            throw new Error("YAML library not loaded (js-yaml).");
+          }
+          obj = jsyaml.load(input);
+          mode = "yaml";
+        }
+
+        $("jyJsonOut").value = JSON.stringify(obj, null, 2);
+        if(typeof jsyaml !== "undefined"){
+          $("jyYamlOut").value = jsyaml.dump(obj, { noRefs:true, lineWidth: 120 });
+        } else {
+          $("jyYamlOut").value = "YAML support not loaded.";
+        }
+        setJYStatus(mode === "json" ? "parsed JSON" : "parsed YAML");
+      }catch(e){
+        setJYStatus(`error: ${e.message}`);
+      }
+    }
+
+    $("jyConvertBtn").addEventListener("click", convertJsonYaml);
+
+    $("jyPrettyBtn").addEventListener("click", () => {
+      const v = $("jyInput").value.trim();
+      if(!v) return setJYStatus("empty");
+      try{
+        const obj = JSON.parse(v);
+        $("jyInput").value = JSON.stringify(obj, null, 2);
+        setJYStatus("pretty");
+      }catch(e){
+        setJYStatus("not valid JSON");
+      }
+    });
+
+    $("jyMinifyBtn").addEventListener("click", () => {
+      const v = $("jyInput").value.trim();
+      if(!v) return setJYStatus("empty");
+      try{
+        const obj = JSON.parse(v);
+        $("jyInput").value = JSON.stringify(obj);
+        setJYStatus("minified");
+      }catch(e){
+        setJYStatus("not valid JSON");
+      }
+    });
+
+    $("jyClearBtn").addEventListener("click", () => {
+      $("jyInput").value = "";
+      $("jyJsonOut").value = "";
+      $("jyYamlOut").value = "";
+      setJYStatus("");
+    });
+
+    // Quick auto-convert as you type (debounced)
+    let jyTimer = null;
+    $("jyInput").addEventListener("input", () => {
+      clearTimeout(jyTimer);
+      jyTimer = setTimeout(convertJsonYaml, 350);
+    });
+
+    // ---------- CSV -> MD ----------
+    $("csvSampleBtn").addEventListener("click", () => {
+      $("csvInput").value = "name,role,team\nAlice,Admin,Infrastructure\nBob,Helpdesk,EUC\nCharlie,SRE,Platform";
+    });
+
+    $("csvConvertBtn").addEventListener("click", () => {
+      const text = $("csvInput").value;
+      try{
+        const rows = parseCSV(text);
+        if(!rows.length){
+          $("mdOut").value = "";
+          setStatus($("csvStatus"), "Nothing to convert.", "warn");
+          return;
+        }
+        const md = csvToMarkdown(rows, $("csvHasHeader").checked);
+        $("mdOut").value = md;
+        setStatus($("csvStatus"), `Converted ${rows.length} row(s).`, "good");
+      }catch(e){
+        setStatus($("csvStatus"), `Error: ${e.message}`, "bad");
+      }
+    });
+
+    $("csvClearBtn").addEventListener("click", () => {
+      $("csvInput").value = "";
+      $("mdOut").value = "";
+      setStatus($("csvStatus"), "Ready.");
+    });
+
+    // ---------- Epoch ----------
+    function updateEpochNow(){
+      const now = Date.now();
+      $("epochNowS").textContent = String(Math.floor(now/1000));
+      $("epochNowMs").textContent = String(now);
+    }
+    updateEpochNow();
+    setInterval(updateEpochNow, 1000);
+
+    function doEpochConvert(){
+      const v = $("epochInput").value.trim();
+      if(!v){
+        setStatus($("epochStatus"), "Enter a timestamp.", "warn");
+        $("epochLocal").textContent = "—";
+        $("epochUtc").textContent = "—";
+        $("epochAgo").textContent = "—";
+        return;
+      }
+      const ms = detectEpochToMs(v);
+      if(ms === null || !Number.isFinite(ms)){
+        setStatus($("epochStatus"), "Not a valid numeric timestamp.", "bad");
+        return;
+      }
+      const d = new Date(ms);
+      if(isNaN(d.getTime())){
+        setStatus($("epochStatus"), "Timestamp out of range.", "bad");
+        return;
+      }
+
+      $("epochLocal").textContent = d.toLocaleString();
+      $("epochUtc").textContent = d.toUTCString();
+      $("epochAgo").textContent = humanAgo(Date.now() - ms);
+
+      // Detection message
+      const len = String(v.replace(/[^0-9]/g,"")).length;
+      let kind = "ms";
+      if(len <= 10) kind = "seconds";
+      else if(len <= 13) kind = "milliseconds";
+      else if(len <= 16) kind = "microseconds";
+      else kind = "nanoseconds";
+
+      setStatus($("epochStatus"), `Parsed as ${kind}.`, "good");
+    }
+
+    $("epochConvertBtn").addEventListener("click", doEpochConvert);
+    $("epochNowBtn").addEventListener("click", () => {
+      $("epochInput").value = String(Date.now());
+      doEpochConvert();
+    });
+    $("epochClearBtn").addEventListener("click", () => {
+      $("epochInput").value = "";
+      $("epochLocal").textContent = "—";
+      $("epochUtc").textContent = "—";
+      $("epochAgo").textContent = "—";
+      setStatus($("epochStatus"), "Ready.");
+    });
+    $("epochInput").addEventListener("keydown", (e) => {
+      if(e.key === "Enter"){ e.preventDefault(); doEpochConvert(); }
+    });
+
+    // ---------- Base64 / URL ----------
+    function setB64Out(text, msg, kind="good"){
+      $("b64Out").value = text;
+      setStatus($("b64Status"), msg, kind);
+    }
+
+    $("b64EncodeBtn").addEventListener("click", () => {
+      try{
+        const t = $("b64Input").value;
+        setB64Out(utf8ToB64(t), "Base64 encoded.", "good");
+      }catch(e){
+        setB64Out("", `Error: ${e.message}`, "bad");
+      }
+    });
+
+    $("b64DecodeBtn").addEventListener("click", () => {
+      try{
+        const t = $("b64Input").value.trim();
+        setB64Out(b64ToUtf8(t), "Base64 decoded.", "good");
+      }catch(e){
+        setB64Out("", "Invalid Base64 (or not UTF-8).", "bad");
+      }
+    });
+
+    $("urlEncodeBtn").addEventListener("click", () => {
+      try{
+        const t = $("b64Input").value;
+        setB64Out(encodeURIComponent(t), "URL encoded.", "good");
+      }catch(e){
+        setB64Out("", `Error: ${e.message}`, "bad");
+      }
+    });
+
+    $("urlDecodeBtn").addEventListener("click", () => {
+      try{
+        const t = $("b64Input").value.trim();
+        setB64Out(decodeURIComponent(t), "URL decoded.", "good");
+      }catch(e){
+        setB64Out("", "Invalid URL encoding.", "bad");
+      }
+    });
+
+    $("b64ClearBtn").addEventListener("click", () => {
+      $("b64Input").value = "";
+      $("b64Out").value = "";
+      setStatus($("b64Status"), "Ready.");
+    });
+
+    // ---------- Diff ----------
+    $("diffBtn").addEventListener("click", () => {
+      const a = $("diffA").value;
+      const b = $("diffB").value;
+      const out = $("diffOut");
+      out.textContent = "";
+      if(!a && !b){
+        setStatus($("diffStatus"), "Paste something in A or B.", "warn");
+        return;
+      }
+      out.appendChild(renderLineDiff(a, b));
+      setStatus($("diffStatus"), "Compared.", "good");
+    });
+
+    $("diffSwapBtn").addEventListener("click", () => {
+      const a = $("diffA").value;
+      $("diffA").value = $("diffB").value;
+      $("diffB").value = a;
+    });
+
+    $("diffClearBtn").addEventListener("click", () => {
+      $("diffA").value = "";
+      $("diffB").value = "";
+      $("diffOut").textContent = "";
+      setStatus($("diffStatus"), "Ready.");
+    });
+  </script>
+</body>
+</html>
