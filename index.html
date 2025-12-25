@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,8 +6,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
   <!-- Primary SEO -->
-  <title>SysAdmin Quick Tools — JSON↔YAML, CSV→Markdown, Epoch, Base64, Diff, Password Check</title>
-  <meta name="description" content="Fast client-side utilities for sysadmins: JSON↔YAML converter, CSV→Markdown table, epoch timestamp converter, Base64/URL encode-decode, quick text diff, and an offline password strength checker. Nothing is uploaded." />
+  <title>SysAdmin Quick Tools — JSON↔YAML, CSV→Markdown, Subnet Calc, Base64, Diff, Password Check</title>
+  <meta name="description" content="Fast client-side utilities for sysadmins: JSON↔YAML converter, CSV→Markdown table, subnet calculator, Base64/URL encode-decode, quick text diff, and an offline password strength checker. Nothing is uploaded." />
   <link rel="canonical" href="https://www.spriteguide.com/" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <meta name="theme-color" content="#0b1020" />
@@ -19,13 +20,13 @@
   <!-- Open Graph / Social -->
   <meta property="og:site_name" content="SysAdmin Quick Tools" />
   <meta property="og:title" content="SysAdmin Quick Tools" />
-  <meta property="og:description" content="Client-side ops utilities: JSON↔YAML, CSV→Markdown, Epoch, Base64/URL, Diff, and offline password strength. Nothing is uploaded." />
+  <meta property="og:description" content="Client-side ops utilities: JSON↔YAML, CSV→Markdown, subnet calculator, Base64/URL, Diff, and offline password strength. Nothing is uploaded." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.spriteguide.com/" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SysAdmin Quick Tools" />
-  <meta name="twitter:description" content="Client-side ops utilities: JSON↔YAML, CSV→Markdown, Epoch, Base64/URL, Diff, and offline password strength. Nothing is uploaded." />
+  <meta name="twitter:description" content="Client-side ops utilities: JSON↔YAML, CSV→Markdown, subnet calculator, Base64/URL, Diff, and offline password strength. Nothing is uploaded." />
 
   <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
@@ -36,7 +37,7 @@
     "url":"https://www.spriteguide.com/",
     "applicationCategory":"DeveloperApplication",
     "operatingSystem":"Any",
-    "description":"Fast client-side utilities for sysadmins: JSON↔YAML converter, CSV→Markdown table, epoch converter, Base64/URL encoder/decoder, quick text diff, and offline password strength checker. Nothing is uploaded.",
+    "description":"Fast client-side utilities for sysadmins: JSON↔YAML converter, CSV→Markdown table, subnet calculator, Base64/URL encoder/decoder, quick text diff, and offline password strength checker. Nothing is uploaded.",
     "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
   }
   </script>
@@ -388,6 +389,20 @@
       background:rgba(8,12,25,.25);
       white-space:nowrap;
     }
+
+    /* ---- Subnet extras ---- */
+    .smallgrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 700px){
+      .smallgrid{grid-template-columns:1fr}
+    }
+    .monohr{
+      border:0;border-top:1px solid rgba(34,48,88,.6);
+      margin:10px 0;
+    }
   </style>
 </head>
 
@@ -431,13 +446,13 @@
     </noscript>
 
     <div class="subhead">
-      Fast, private ops utilities for 2026: converters, timestamp tools, quick diffs, and password strength checks you can keep pinned.
+      Fast, private ops utilities for 2026: converters, subnet math, quick diffs, and password strength checks you can keep pinned.
     </div>
 
     <div class="togglebar">
       <span class="chip" data-jump="jsonyaml">JSON ⇄ YAML</span>
       <span class="chip" data-jump="csvmd">CSV → Markdown</span>
-      <span class="chip" data-jump="epoch">Epoch</span>
+      <span class="chip" data-jump="subnet">Subnet</span>
       <span class="chip" data-jump="b64">Base64 / URL</span>
       <span class="chip" data-jump="diff">Diff</span>
       <span class="chip" data-jump="pwcheck">Password</span>
@@ -559,47 +574,71 @@
         </details>
       </div>
 
-      <!-- Epoch -->
-      <div class="card" id="epoch">
+      <!-- Subnet calculator -->
+      <div class="card" id="subnet">
         <details>
           <summary>
             <div class="sum-left">
-              <div class="icon">⏱</div>
+              <div class="icon">/</div>
               <div>
-                <div class="sum-title">Epoch / Timestamp Converter</div>
-                <div class="hint">Auto-detect seconds / ms / ns. Shows Local + UTC + relative.</div>
+                <div class="sum-title">Subnet Calculator (IPv4)</div>
+                <div class="hint">Enter IP + CIDR or netmask. Outputs network, broadcast, usable range, wildcard, and host counts.</div>
               </div>
             </div>
             <div class="chev">▾</div>
           </summary>
+
           <div class="content">
             <div class="row single">
               <div class="mini">
                 <div>
-                  <label>Enter timestamp (epoch seconds / ms / ns)</label>
-                  <input type="text" id="epochInput" placeholder="e.g. 1735352529 or 1735352529000" />
-                  <div class="actions">
-                    <div class="left-actions">
-                      <button class="btn good" id="epochConvertBtn">Convert</button>
-                      <button class="btn secondary" id="epochNowBtn">Use now</button>
+                  <div class="smallgrid">
+                    <div>
+                      <label>IP address</label>
+                      <input type="text" id="subIp" placeholder="e.g. 192.168.1.50" />
                     </div>
-                    <div class="right-actions">
-                      <button class="btn secondary" id="epochClearBtn">Clear</button>
+                    <div>
+                      <label>CIDR or netmask</label>
+                      <input type="text" id="subMask" placeholder="e.g. /24 or 255.255.255.0" />
                     </div>
                   </div>
-                  <div class="status" id="epochStatus">Ready.</div>
+
+                  <div class="actions">
+                    <div class="left-actions">
+                      <button class="btn good" id="subCalcBtn">Calculate</button>
+                      <button class="btn secondary" id="subSampleBtn">Sample</button>
+                      <button class="btn secondary" id="subPasteBtn" title="Paste like 10.0.0.5/16 from clipboard (if allowed)">Paste CIDR</button>
+                    </div>
+                    <div class="right-actions">
+                      <button class="btn secondary" id="subClearBtn">Clear</button>
+                    </div>
+                  </div>
+
+                  <div class="status" id="subStatus">Ready.</div>
+                  <div class="hint" style="margin-top:8px;">
+                    Tip: you can paste <span style="font-family:var(--mono);">10.0.0.5/16</span> into either box and hit Calculate.
+                  </div>
                 </div>
 
                 <div class="kpi">
-                  <div><b>Local:</b> <span id="epochLocal">—</span></div>
-                  <div><b>UTC:</b> <span id="epochUtc">—</span></div>
-                  <div><b>Elapsed:</b> <span id="epochAgo">—</span></div>
-                  <hr style="border:0;border-top:1px solid rgba(34,48,88,.6);margin:10px 0;">
-                  <div><b>Current epoch (s):</b> <span id="epochNowS">—</span></div>
-                  <div><b>Current epoch (ms):</b> <span id="epochNowMs">—</span></div>
+                  <div><b>Network:</b> <span id="subNetwork">—</span> <button class="btn small secondary" data-copytext="subNetwork">Copy</button></div>
+                  <div><b>Broadcast:</b> <span id="subBroadcast">—</span> <button class="btn small secondary" data-copytext="subBroadcast">Copy</button></div>
+                  <div><b>First usable:</b> <span id="subFirst">—</span></div>
+                  <div><b>Last usable:</b> <span id="subLast">—</span></div>
+
+                  <hr class="monohr">
+
+                  <div><b>Prefix:</b> <span id="subCidr">—</span></div>
+                  <div><b>Netmask:</b> <span id="subNetmask">—</span> <button class="btn small secondary" data-copytext="subNetmask">Copy</button></div>
+                  <div><b>Wildcard:</b> <span id="subWildcard">—</span></div>
+
+                  <hr class="monohr">
+
+                  <div><b>Total addresses:</b> <span id="subTotal">—</span></div>
+                  <div><b>Usable hosts:</b> <span id="subUsable">—</span></div>
+
                   <div style="margin-top:8px;">
-                    <button class="btn small secondary" data-copytext="epochNowS">Copy s</button>
-                    <button class="btn small secondary" data-copytext="epochNowMs">Copy ms</button>
+                    <button class="btn small secondary" id="subCopySummaryBtn">Copy summary</button>
                   </div>
                 </div>
               </div>
@@ -890,45 +929,6 @@
       return new TextDecoder().decode(bytes);
     }
 
-    function humanAgo(msDelta){
-      const past = msDelta >= 0;
-      const ms = Math.abs(msDelta);
-      const sec = Math.floor(ms/1000);
-      if(sec < 5) return past ? "just now" : "in a moment";
-      const mins = Math.floor(sec/60);
-      const hrs  = Math.floor(mins/60);
-      const days = Math.floor(hrs/24);
-
-      const fmt = (n,u) => `${n} ${u}${n===1?"":"s"}`;
-      let out = "";
-      if(days>0) out = fmt(days,"day");
-      else if(hrs>0) out = fmt(hrs,"hour");
-      else if(mins>0) out = fmt(mins,"minute");
-      else out = fmt(sec,"second");
-
-      return past ? `${out} ago` : `in ${out}`;
-    }
-
-    function detectEpochToMs(input){
-      const s = String(input).trim();
-      if(!/^-?\d+(\.\d+)?$/.test(s)) return null;
-
-      if(s.includes(".")){
-        const sec = Number(s);
-        if(!Number.isFinite(sec)) return null;
-        return Math.round(sec * 1000);
-      }
-
-      const n = BigInt(s);
-      const abs = n < 0n ? -n : n;
-      const len = abs.toString().length;
-
-      if(len <= 10) return Number(n) * 1000;         // seconds
-      if(len <= 13) return Number(n);                // ms
-      if(len <= 16) return Number(n / 1000n);        // microseconds -> ms
-      return Number(n / 1000000n);                   // nanoseconds -> ms
-    }
-
     function renderLineDiff(aText, bText){
       const a = aText.replace(/\r\n/g,"\n").split("\n");
       const b = bText.replace(/\r\n/g,"\n").split("\n");
@@ -961,7 +961,6 @@
 
     // ---------- Live ticker (UTC / Epoch / Patch Tuesday) ----------
     function nthWeekdayOfMonthUTC(year, monthIndex, weekday, n){
-      // weekday: 0=Sun..6=Sat
       const first = new Date(Date.UTC(year, monthIndex, 1, 0, 0, 0));
       const firstDow = first.getUTCDay();
       const delta = (weekday - firstDow + 7) % 7;
@@ -970,12 +969,9 @@
     }
 
     function nextPatchTuesdayUTC(fromDate){
-      // Patch Tuesday = 2nd Tuesday of the month (commonly)
       const y = fromDate.getUTCFullYear();
       const m = fromDate.getUTCMonth();
       const ptThisMonth = nthWeekdayOfMonthUTC(y, m, 2, 2); // Tuesday=2, 2nd occurrence
-
-      // If we're past that day (end of day UTC), move to next month
       const endOfPtDay = new Date(Date.UTC(ptThisMonth.getUTCFullYear(), ptThisMonth.getUTCMonth(), ptThisMonth.getUTCDate(), 23, 59, 59));
       if(fromDate <= endOfPtDay) return ptThisMonth;
 
@@ -1015,7 +1011,6 @@
       const pt = nextPatchTuesdayUTC(now);
       const msTo = pt.getTime() - nowMs;
 
-      // If it's patch tuesday (UTC date match), show “today”
       const isTodayUTC =
         now.getUTCFullYear() === pt.getUTCFullYear() &&
         now.getUTCMonth() === pt.getUTCMonth() &&
@@ -1025,7 +1020,6 @@
       $("tickPatch").textContent = `Patch Tuesday: ${fmtYMDUTC(pt)} (${when})`;
     }
 
-    // Copy buttons for ticker
     $("tickCopyUtcBtn").addEventListener("click", async () => {
       const txt = $("tickUtc").textContent || "";
       const ok = await copyText(txt);
@@ -1050,16 +1044,26 @@
     $("openAllBtn").addEventListener("click", () => document.querySelectorAll("details").forEach(d=>d.open=true));
     $("closeAllBtn").addEventListener("click", () => document.querySelectorAll("details").forEach(d=>d.open=false));
     $("clearAllBtn").addEventListener("click", () => {
-      ["jyInput","jyJsonOut","jyYamlOut","csvInput","mdOut","epochInput","b64Input","b64Out","diffA","diffB","pwInput"].forEach(id => { if($(id)) $(id).value = ""; });
+      [
+        "jyInput","jyJsonOut","jyYamlOut",
+        "csvInput","mdOut",
+        "subIp","subMask",
+        "b64Input","b64Out",
+        "diffA","diffB",
+        "pwInput"
+      ].forEach(id => { if($(id)) $(id).value = ""; });
+
       $("diffOut").textContent = "";
       setStatus($("csvStatus"), "Ready.");
-      setStatus($("epochStatus"), "Ready.");
+      setStatus($("subStatus"), "Ready.");
       setStatus($("b64Status"), "Ready.");
       setStatus($("diffStatus"), "Ready.");
       setStatus($("pwStatusBox"), "Ready.");
-      $("epochLocal").textContent = "—";
-      $("epochUtc").textContent = "—";
-      $("epochAgo").textContent = "—";
+
+      // Reset subnet outputs
+      ["subNetwork","subBroadcast","subFirst","subLast","subCidr","subNetmask","subWildcard","subTotal","subUsable"]
+        .forEach(id => { if($(id)) $(id).textContent = "—"; });
+
       resetPwUI();
     });
 
@@ -1096,20 +1100,13 @@
     // ---------- JSON/YAML ----------
     const jyStatusEl = $("jyStatus");
     function setJYStatus(msg){ jyStatusEl.textContent = msg ? `(${msg})` : ""; }
-
-    function isLikelyJSON(s){
-      const t = s.trim();
-      return t.startsWith("{") || t.startsWith("[");
-    }
+    function isLikelyJSON(s){ const t = s.trim(); return t.startsWith("{") || t.startsWith("["); }
 
     function convertJsonYaml(){
       const input = $("jyInput").value.trim();
       $("jyJsonOut").value = "";
       $("jyYamlOut").value = "";
-      if(!input){
-        setJYStatus("paste something");
-        return;
-      }
+      if(!input){ setJYStatus("paste something"); return; }
 
       try{
         let obj;
@@ -1118,9 +1115,7 @@
           obj = JSON.parse(input);
           mode = "parsed JSON";
         } else {
-          if(typeof jsyaml === "undefined"){
-            throw new Error("YAML library not loaded (js-yaml).");
-          }
+          if(typeof jsyaml === "undefined") throw new Error("YAML library not loaded (js-yaml).");
           obj = jsyaml.load(input);
           mode = "parsed YAML";
         }
@@ -1137,7 +1132,6 @@
     }
 
     $("jyConvertBtn").addEventListener("click", convertJsonYaml);
-
     $("jyPrettyBtn").addEventListener("click", () => {
       const v = $("jyInput").value.trim();
       if(!v) return setJYStatus("empty");
@@ -1145,11 +1139,8 @@
         const obj = JSON.parse(v);
         $("jyInput").value = JSON.stringify(obj, null, 2);
         setJYStatus("pretty JSON");
-      }catch(e){
-        setJYStatus("not valid JSON");
-      }
+      }catch(e){ setJYStatus("not valid JSON"); }
     });
-
     $("jyMinifyBtn").addEventListener("click", () => {
       const v = $("jyInput").value.trim();
       if(!v) return setJYStatus("empty");
@@ -1157,11 +1148,8 @@
         const obj = JSON.parse(v);
         $("jyInput").value = JSON.stringify(obj);
         setJYStatus("minified JSON");
-      }catch(e){
-        setJYStatus("not valid JSON");
-      }
+      }catch(e){ setJYStatus("not valid JSON"); }
     });
-
     $("jyClearBtn").addEventListener("click", () => {
       $("jyInput").value = "";
       $("jyJsonOut").value = "";
@@ -1203,63 +1191,216 @@
       setStatus($("csvStatus"), "Ready.");
     });
 
-    // ---------- Epoch ----------
-    function updateEpochNow(){
-      const now = Date.now();
-      $("epochNowS").textContent = String(Math.floor(now/1000));
-      $("epochNowMs").textContent = String(now);
-    }
-    updateEpochNow();
-    setInterval(updateEpochNow, 1000);
+    // ---------- Subnet calculator (IPv4) ----------
+    function isValidOctet(n){ return Number.isInteger(n) && n >= 0 && n <= 255; }
 
-    function doEpochConvert(){
-      const v = $("epochInput").value.trim();
-      if(!v){
-        setStatus($("epochStatus"), "Enter a timestamp.", "warn");
-        $("epochLocal").textContent = "—";
-        $("epochUtc").textContent = "—";
-        $("epochAgo").textContent = "—";
-        return;
-      }
-      const ms = detectEpochToMs(v);
-      if(ms === null || !Number.isFinite(ms)){
-        setStatus($("epochStatus"), "Not a valid numeric timestamp.", "bad");
-        return;
-      }
-      const d = new Date(ms);
-      if(isNaN(d.getTime())){
-        setStatus($("epochStatus"), "Timestamp out of range.", "bad");
-        return;
-      }
-
-      $("epochLocal").textContent = d.toLocaleString();
-      $("epochUtc").textContent = d.toUTCString();
-      $("epochAgo").textContent = humanAgo(Date.now() - ms);
-
-      const len = String(v.replace(/[^0-9]/g,"")).length;
-      let kind = "milliseconds";
-      if(len <= 10) kind = "seconds";
-      else if(len <= 13) kind = "milliseconds";
-      else if(len <= 16) kind = "microseconds";
-      else kind = "nanoseconds";
-
-      setStatus($("epochStatus"), `Parsed as ${kind}.`, "good");
+    function ipv4ToInt(ip){
+      const parts = String(ip).trim().split(".");
+      if(parts.length !== 4) return null;
+      const nums = parts.map(p => Number(p));
+      if(nums.some(n => !isValidOctet(n))) return null;
+      return ((nums[0] << 24) >>> 0) + (nums[1] << 16) + (nums[2] << 8) + (nums[3] >>> 0);
     }
 
-    $("epochConvertBtn").addEventListener("click", doEpochConvert);
-    $("epochNowBtn").addEventListener("click", () => {
-      $("epochInput").value = String(Date.now());
-      doEpochConvert();
+    function intToIpv4(n){
+      const a = (n >>> 24) & 255;
+      const b = (n >>> 16) & 255;
+      const c = (n >>> 8) & 255;
+      const d = n & 255;
+      return `${a}.${b}.${c}.${d}`;
+    }
+
+    function cidrToMaskInt(cidr){
+      if(!Number.isInteger(cidr) || cidr < 0 || cidr > 32) return null;
+      if(cidr === 0) return 0 >>> 0;
+      return (0xFFFFFFFF << (32 - cidr)) >>> 0;
+    }
+
+    function maskIntToCidr(maskInt){
+      // ensure contiguous ones then zeros
+      let seenZero = false;
+      let cidr = 0;
+      for(let i=31;i>=0;i--){
+        const bit = (maskInt >>> i) & 1;
+        if(bit === 1){
+          if(seenZero) return null; // non-contiguous
+          cidr++;
+        } else {
+          seenZero = true;
+        }
+      }
+      return cidr;
+    }
+
+    function parseMaskOrCidr(s){
+      const t = String(s || "").trim();
+      if(!t) return null;
+
+      // accept "10.0.0.1/24" pasted into mask box
+      const slashIdx = t.indexOf("/");
+      if(slashIdx !== -1 && slashIdx < t.length - 1){
+        const maybe = t.slice(slashIdx + 1).trim();
+        if(/^\d{1,2}$/.test(maybe)){
+          const cidr = Number(maybe);
+          const maskInt = cidrToMaskInt(cidr);
+          if(maskInt === null) return null;
+          return { cidr, maskInt };
+        }
+      }
+
+      // "/24" or "24"
+      const m = t.startsWith("/") ? t.slice(1) : t;
+      if(/^\d{1,2}$/.test(m)){
+        const cidr = Number(m);
+        const maskInt = cidrToMaskInt(cidr);
+        if(maskInt === null) return null;
+        return { cidr, maskInt };
+      }
+
+      // dotted mask
+      const maskInt = ipv4ToInt(t);
+      if(maskInt === null) return null;
+      const cidr = maskIntToCidr(maskInt);
+      if(cidr === null) return null;
+      return { cidr, maskInt };
+    }
+
+    function parseIpAndMask(){
+      // allow CIDR pasted into IP input: "10.0.0.5/16"
+      const ipRaw = $("subIp").value.trim();
+      const maskRaw = $("subMask").value.trim();
+
+      let ipPart = ipRaw;
+      let maskPart = maskRaw;
+
+      if(ipRaw.includes("/") && !maskRaw){
+        const [a,b] = ipRaw.split("/", 2);
+        ipPart = a.trim();
+        maskPart = "/" + (b || "").trim();
+      } else if(maskRaw.includes("/") && ipRaw && ipRaw.includes("/") === false && maskRaw.includes("." ) === false && maskRaw.startsWith("/") === false){
+        // if user typed "24" in mask box, that's okay (handled below)
+      } else if(maskRaw.includes("/") && ipRaw.includes("/") && ipRaw.split("/").length === 2){
+        // prefer ip box; keep as-is
+      }
+
+      const ipInt = ipv4ToInt(ipPart);
+      if(ipInt === null) return { error: "Invalid IPv4 address." };
+
+      const parsed = parseMaskOrCidr(maskPart);
+      if(parsed === null) return { error: "Invalid CIDR/netmask. Try /24 or 255.255.255.0" };
+
+      return { ipInt, ipText: intToIpv4(ipInt), cidr: parsed.cidr, maskInt: parsed.maskInt };
+    }
+
+    function formatBigInt(n){
+      return n.toString();
+    }
+
+    function calcSubnet(){
+      const p = parseIpAndMask();
+      if(p.error){
+        setStatus($("subStatus"), p.error, "bad");
+        return;
+      }
+
+      const { ipInt, cidr, maskInt } = p;
+      const wildcardInt = (~maskInt) >>> 0;
+      const networkInt = (ipInt & maskInt) >>> 0;
+      const broadcastInt = (networkInt | wildcardInt) >>> 0;
+
+      const total = 1n << BigInt(32 - cidr); // total addresses
+
+      let usable;
+      let firstInt, lastInt;
+
+      if(cidr === 32){
+        usable = 1n;
+        firstInt = networkInt;
+        lastInt = networkInt;
+      } else if(cidr === 31){
+        // RFC 3021 point-to-point: 2 usable, no network/broadcast semantics for hosts
+        usable = 2n;
+        firstInt = networkInt;
+        lastInt = broadcastInt;
+      } else {
+        usable = total - 2n;
+        firstInt = (networkInt + 1) >>> 0;
+        lastInt = (broadcastInt - 1) >>> 0;
+      }
+
+      $("subNetwork").textContent = `${intToIpv4(networkInt)}/${cidr}`;
+      $("subBroadcast").textContent = intToIpv4(broadcastInt);
+      $("subFirst").textContent = intToIpv4(firstInt);
+      $("subLast").textContent = intToIpv4(lastInt);
+
+      $("subCidr").textContent = `/${cidr}`;
+      $("subNetmask").textContent = intToIpv4(maskInt);
+      $("subWildcard").textContent = intToIpv4(wildcardInt);
+
+      $("subTotal").textContent = formatBigInt(total);
+      $("subUsable").textContent = formatBigInt(usable);
+
+      setStatus($("subStatus"), "Calculated.", "good");
+    }
+
+    function clearSubnet(){
+      $("subIp").value = "";
+      $("subMask").value = "";
+      ["subNetwork","subBroadcast","subFirst","subLast","subCidr","subNetmask","subWildcard","subTotal","subUsable"]
+        .forEach(id => $(id).textContent = "—");
+      setStatus($("subStatus"), "Ready.");
+    }
+
+    $("subCalcBtn").addEventListener("click", calcSubnet);
+
+    $("subSampleBtn").addEventListener("click", () => {
+      $("subIp").value = "192.168.20.55";
+      $("subMask").value = "/24";
+      calcSubnet();
     });
-    $("epochClearBtn").addEventListener("click", () => {
-      $("epochInput").value = "";
-      $("epochLocal").textContent = "—";
-      $("epochUtc").textContent = "—";
-      $("epochAgo").textContent = "—";
-      setStatus($("epochStatus"), "Ready.");
+
+    $("subPasteBtn").addEventListener("click", async () => {
+      try{
+        const txt = await navigator.clipboard.readText();
+        const t = String(txt || "").trim();
+        if(!t){
+          setStatus($("subStatus"), "Clipboard empty.", "warn");
+          return;
+        }
+        if(t.includes("/") && /^\d{1,3}(\.\d{1,3}){3}\/\d{1,2}$/.test(t)){
+          const [ip, cidr] = t.split("/");
+          $("subIp").value = ip;
+          $("subMask").value = "/" + cidr;
+          calcSubnet();
+          return;
+        }
+        setStatus($("subStatus"), "Clipboard doesn't look like IPv4/CIDR (e.g. 10.0.0.5/16).", "warn");
+      }catch(e){
+        setStatus($("subStatus"), "Clipboard read blocked by browser permissions.", "warn");
+      }
     });
-    $("epochInput").addEventListener("keydown", (e) => {
-      if(e.key === "Enter"){ e.preventDefault(); doEpochConvert(); }
+
+    $("subClearBtn").addEventListener("click", clearSubnet);
+
+    // Enter to calculate
+    $("subIp").addEventListener("keydown", (e) => { if(e.key === "Enter"){ e.preventDefault(); calcSubnet(); } });
+    $("subMask").addEventListener("keydown", (e) => { if(e.key === "Enter"){ e.preventDefault(); calcSubnet(); } });
+
+    $("subCopySummaryBtn").addEventListener("click", async () => {
+      const summary = [
+        `Network: ${$("subNetwork").textContent}`,
+        `Broadcast: ${$("subBroadcast").textContent}`,
+        `Usable: ${$("subUsable").textContent} of ${$("subTotal").textContent}`,
+        `Range: ${$("subFirst").textContent} - ${$("subLast").textContent}`,
+        `Mask: ${$("subNetmask").textContent} (${ $("subCidr").textContent })`,
+        `Wildcard: ${$("subWildcard").textContent}`
+      ].join("\n");
+
+      const ok = await copyText(summary);
+      const btn = $("subCopySummaryBtn");
+      const prev = btn.textContent;
+      btn.textContent = ok ? "Copied" : "Copy failed";
+      setTimeout(()=> btn.textContent = prev, 900);
     });
 
     // ---------- Base64 / URL ----------
@@ -1459,7 +1600,6 @@
         };
       }
 
-      // fallback
       const bits = entropyBits(pw);
 
       if(len < 14) tips.push("Use 14+ characters (length matters most).");
@@ -1581,3 +1721,6 @@
   </script>
 </body>
 </html>
+```
+
+If you want the subnet tool to also support “given *host count* → smallest CIDR” (handy for VNET/subnet sizing), say the word and I’ll add a second mode without cluttering the UI.
