@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
   <!-- Primary SEO -->
-  <title>SysAdmin Quick Tools — JSON↔YAML, CSV→Markdown, Subnet Calc, Base64, Diff, Password Check</title>
-  <meta name="description" content="Fast client-side utilities for sysadmins: JSON↔YAML converter, CSV→Markdown table, subnet calculator, Base64/URL encode-decode, quick text diff, and an offline password strength checker. Nothing is uploaded." />
+  <title>YAML to JSON Converter (Runs Locally) - SysAdmin Quick Tools</title>
+  <meta name="description" content="YAML to JSON converter that runs locally in your browser. Also includes JSON to YAML, CSV to Markdown, subnet calculator, Base64 and URL tools, text diff, and an offline password strength checker. Nothing is uploaded." />
   <link rel="canonical" href="https://www.spriteguide.com/" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <meta name="theme-color" content="#0b1020" />
@@ -18,26 +18,36 @@
 
   <!-- Open Graph / Social -->
   <meta property="og:site_name" content="SysAdmin Quick Tools" />
-  <meta property="og:title" content="SysAdmin Quick Tools" />
-  <meta property="og:description" content="Client-side ops utilities: JSON↔YAML, CSV→Markdown, subnet calculator, Base64/URL, Diff, and offline password strength. Nothing is uploaded." />
+  <meta property="og:title" content="YAML to JSON Converter - SysAdmin Quick Tools" />
+  <meta property="og:description" content="Fast YAML to JSON converter that runs locally in your browser. Also includes JSON to YAML, CSV to Markdown, subnet math, Base64 and URL tools, diff, and offline password strength checks. Nothing is uploaded." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.spriteguide.com/" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="SysAdmin Quick Tools" />
-  <meta name="twitter:description" content="Client-side ops utilities: JSON↔YAML, CSV→Markdown, subnet calculator, Base64/URL, Diff, and offline password strength. Nothing is uploaded." />
+  <meta name="twitter:title" content="YAML to JSON Converter - SysAdmin Quick Tools" />
+  <meta name="twitter:description" content="Fast YAML to JSON converter that runs locally in your browser. Also includes JSON to YAML, CSV to Markdown, subnet math, Base64 and URL tools, diff, and offline password strength checks. Nothing is uploaded." />
 
   <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@type":"WebApplication",
-    "name":"SysAdmin Quick Tools",
+    "name":"YAML to JSON Converter - SysAdmin Quick Tools",
     "url":"https://www.spriteguide.com/",
     "applicationCategory":"DeveloperApplication",
     "operatingSystem":"Any",
-    "description":"Fast client-side utilities for sysadmins: JSON↔YAML converter, CSV→Markdown table, subnet calculator, Base64/URL encoder/decoder, quick text diff, and offline password strength checker. Nothing is uploaded.",
-    "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+    "description":"YAML to JSON converter that runs locally in your browser. Also includes JSON to YAML, CSV to Markdown table, subnet calculator, Base64 and URL encoder/decoder, quick text diff, and offline password strength checker. Nothing is uploaded.",
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+    "featureList":[
+      "YAML to JSON converter",
+      "JSON to YAML converter",
+      "CSV to Markdown table converter",
+      "Subnet calculator (IPv4)",
+      "Base64 encoder and decoder",
+      "URL encoder and decoder",
+      "Text diff",
+      "Offline password strength checker"
+    ]
   }
   </script>
 
@@ -95,9 +105,17 @@
       padding:6px 10px;border-radius:999px;
     }
     .subhead{
-      margin:10px 0 18px;
+      margin:10px 0 12px;
       color:var(--muted);
       text-align:center;
+    }
+    .lead{
+      margin:0 auto 14px;
+      max-width:920px;
+      color:var(--muted);
+      text-align:center;
+      font-size:13px;
+      line-height:1.45;
     }
     .topbar{
       display:flex;gap:10px;align-items:center;justify-content:flex-end;
@@ -161,7 +179,7 @@
     .content{padding:14px 16px 16px}
     .row{
       display:grid;
-      grid-template-columns: 1fr 44px 1fr;
+      grid-template-columns: 1fr 1fr;
       gap:12px;
       align-items:stretch;
     }
@@ -169,7 +187,6 @@
     .row.two{grid-template-columns: 1fr 1fr;gap:12px;}
     @media (max-width: 900px){
       .row{grid-template-columns:1fr;}
-      .arrow{display:none}
     }
     label{
       display:flex;align-items:center;justify-content:space-between;
@@ -191,12 +208,6 @@
       box-shadow: inset 0 0 0 1px rgba(0,0,0,.15);
     }
     textarea{min-height:170px;resize:vertical}
-    .arrow{
-      display:grid;place-items:center;
-      color:rgba(215,222,240,.35);
-      font-size:28px;
-      user-select:none;
-    }
     .actions{
       margin-top:10px;
       display:flex;gap:10px;flex-wrap:wrap;align-items:center;
@@ -402,6 +413,40 @@
       border:0;border-top:1px solid rgba(34,48,88,.6);
       margin:10px 0;
     }
+
+    /* ---- SEO helper sections ---- */
+    .seo{
+      max-width:920px;
+      margin:0 auto 14px;
+      padding:12px 14px;
+      border:1px solid rgba(34,48,88,.75);
+      border-radius:14px;
+      background:rgba(8,12,25,.25);
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .seo h2{
+      margin:0 0 8px;
+      font-size:14px;
+      color:var(--text);
+      letter-spacing:.1px;
+    }
+    .seo ul{
+      margin:8px 0 0;
+      padding-left:18px;
+    }
+    .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
   </style>
 </head>
 
@@ -409,8 +454,8 @@
   <div class="wrap">
     <header>
       <div class="title">
-        <h1>SysAdmin Quick Tools</h1>
-        <div class="pill">Runs locally in your browser — nothing is uploaded.</div>
+        <h1>YAML to JSON Converter</h1>
+        <div class="pill">Runs locally in your browser. Nothing is uploaded.</div>
       </div>
       <div class="topbar">
         <button class="btn secondary small" id="openAllBtn" title="Expand all tools">Open all</button>
@@ -441,43 +486,62 @@
     </div>
 
     <noscript>
-      This page needs JavaScript to run the tools. Your pasted data still stays local — it’s just processed in-browser.
+      This page needs JavaScript to run the tools. Your pasted data still stays local and is processed in-browser.
     </noscript>
 
     <div class="subhead">
-      Fast, private ops utilities for 2026: converters, subnet math, quick diffs, and password strength checks you can keep pinned.
+      Convert YAML to JSON instantly, locally, and privately.
+    </div>
+
+    <div class="lead">
+      Paste YAML on the left and get formatted JSON on the right. You can also paste JSON and convert to YAML.
+      This is a single-page toolbox for sysadmins with additional converters and quick utilities.
     </div>
 
     <div class="togglebar">
-      <span class="chip" data-jump="jsonyaml">JSON ⇄ YAML</span>
-      <span class="chip" data-jump="csvmd">CSV → Markdown</span>
+      <span class="chip" data-jump="jsonyaml">YAML to JSON</span>
+      <span class="chip" data-jump="csvmd">CSV to Markdown</span>
       <span class="chip" data-jump="subnet">Subnet</span>
-      <span class="chip" data-jump="b64">Base64 / URL</span>
+      <span class="chip" data-jump="b64">Base64 and URL</span>
       <span class="chip" data-jump="diff">Diff</span>
       <span class="chip" data-jump="pwcheck">Password</span>
     </div>
 
+    <!-- Extra indexable copy without changing your one-page approach -->
+    <section class="seo" aria-label="About the YAML to JSON converter">
+      <h2>About this YAML to JSON converter</h2>
+      <div>
+        This YAML to JSON converter runs entirely in your browser. Nothing is uploaded and the page does not store your pasted data.
+        It is designed for quick config work, Kubernetes manifests, Ansible variables, and everyday troubleshooting.
+      </div>
+      <ul>
+        <li>Input: YAML or JSON</li>
+        <li>Output: pretty JSON and YAML</li>
+        <li>Private by default: local processing only</li>
+      </ul>
+    </section>
+
     <div class="grid">
 
-      <!-- JSON <-> YAML -->
+      <!-- JSON and YAML -->
       <div class="card" id="jsonyaml">
         <details open>
           <summary>
             <div class="sum-left">
               <div class="icon">{}</div>
               <div>
-                <div class="sum-title">JSON ⇄ YAML Converter</div>
-                <div class="hint">Auto-detect input. Pretty JSON + YAML output. Highlights parse errors.</div>
+                <div class="sum-title">YAML to JSON Converter (and JSON to YAML)</div>
+                <div class="hint">Auto-detect input. Pretty JSON plus YAML output. Highlights parse errors.</div>
               </div>
             </div>
-            <div class="chev">▾</div>
+            <div class="chev">v</div>
           </summary>
 
           <div class="content">
             <div class="row">
               <div>
-                <label>Paste JSON or YAML here… <span class="hint" id="jyStatus"></span></label>
-                <textarea id="jyInput" placeholder='{"hello":"world"}&#10;or&#10;hello: world'></textarea>
+                <label>Paste YAML or JSON here <span class="hint" id="jyStatus"></span></label>
+                <textarea id="jyInput" placeholder='hello: world&#10;items:&#10;  - one&#10;  - two&#10;&#10;or&#10;&#10;{"hello":"world"}'></textarea>
                 <div class="actions">
                   <div class="left-actions">
                     <button class="btn good" id="jyConvertBtn">Convert</button>
@@ -490,11 +554,9 @@
                 </div>
               </div>
 
-              <div class="arrow">»</div>
-
               <div>
                 <label>Formatted JSON</label>
-                <textarea id="jyJsonOut" placeholder="Formatted JSON output…" readonly></textarea>
+                <textarea id="jyJsonOut" placeholder="Formatted JSON output..." readonly></textarea>
                 <div class="actions">
                   <div class="left-actions">
                     <button class="btn small secondary" data-copy="jyJsonOut">Copy</button>
@@ -505,7 +567,7 @@
                 </div>
 
                 <label style="margin-top:12px;">YAML Output</label>
-                <textarea id="jyYamlOut" placeholder="YAML output…" readonly></textarea>
+                <textarea id="jyYamlOut" placeholder="YAML output..." readonly></textarea>
                 <div class="actions">
                   <div class="left-actions">
                     <button class="btn small secondary" data-copy="jyYamlOut">Copy</button>
@@ -517,28 +579,28 @@
               </div>
             </div>
 
-            <div class="adslot">[Ad slot placeholder — keep ads minimal and away from the textareas]</div>
+            <div class="adslot">[Ad slot placeholder. Keep ads minimal and away from the textareas]</div>
           </div>
         </details>
       </div>
 
-      <!-- CSV -> Markdown -->
+      <!-- CSV to Markdown -->
       <div class="card" id="csvmd">
         <details>
           <summary>
             <div class="sum-left">
               <div class="icon">CSV</div>
               <div>
-                <div class="sum-title">CSV → Markdown Table</div>
-                <div class="hint">Paste CSV. Outputs GitHub/Obsidian-ready Markdown table.</div>
+                <div class="sum-title">CSV to Markdown Table</div>
+                <div class="hint">Paste CSV. Outputs GitHub and Obsidian-ready Markdown table.</div>
               </div>
             </div>
-            <div class="chev">▾</div>
+            <div class="chev">v</div>
           </summary>
           <div class="content">
             <div class="row">
               <div>
-                <label>Paste CSV data…</label>
+                <label>Paste CSV data</label>
                 <textarea id="csvInput" placeholder='name,role&#10;Alice,Admin&#10;Bob,Helpdesk'></textarea>
                 <div class="actions">
                   <div class="left-actions">
@@ -553,11 +615,9 @@
                 </div>
               </div>
 
-              <div class="arrow">»</div>
-
               <div>
                 <label>Markdown Table Output</label>
-                <textarea id="mdOut" placeholder="Markdown table output…" readonly></textarea>
+                <textarea id="mdOut" placeholder="Markdown table output..." readonly></textarea>
                 <div class="actions">
                   <div class="left-actions">
                     <button class="btn small secondary" data-copy="mdOut">Copy</button>
@@ -581,10 +641,10 @@
               <div class="icon">/</div>
               <div>
                 <div class="sum-title">Subnet Calculator (IPv4)</div>
-                <div class="hint">Enter IP + CIDR or netmask. Outputs network, broadcast, usable range, wildcard, and host counts.</div>
+                <div class="hint">Enter IP and CIDR or netmask. Outputs network, broadcast, usable range, wildcard, and host counts.</div>
               </div>
             </div>
-            <div class="chev">▾</div>
+            <div class="chev">v</div>
           </summary>
 
           <div class="content">
@@ -646,24 +706,24 @@
         </details>
       </div>
 
-      <!-- Base64 / URL -->
+      <!-- Base64 and URL -->
       <div class="card" id="b64">
         <details>
           <summary>
             <div class="sum-left">
               <div class="icon">b64</div>
               <div>
-                <div class="sum-title">Base64 / URL Encoder & Decoder</div>
+                <div class="sum-title">Base64 and URL Encoder and Decoder</div>
                 <div class="hint">UTF-8 safe. Handy for headers, tokens, and quick debugging.</div>
               </div>
             </div>
-            <div class="chev">▾</div>
+            <div class="chev">v</div>
           </summary>
           <div class="content">
             <div class="row">
               <div>
-                <label>Encode / decode text…</label>
-                <textarea id="b64Input" placeholder="Paste text here…"></textarea>
+                <label>Encode and decode text</label>
+                <textarea id="b64Input" placeholder="Paste text here..."></textarea>
                 <div class="actions">
                   <div class="left-actions">
                     <button class="btn good" id="b64EncodeBtn">Base64 Encode</button>
@@ -678,11 +738,9 @@
                 <div class="status" id="b64Status">Ready.</div>
               </div>
 
-              <div class="arrow">»</div>
-
               <div>
                 <label>Result</label>
-                <textarea id="b64Out" placeholder="Result…" readonly></textarea>
+                <textarea id="b64Out" placeholder="Result..." readonly></textarea>
                 <div class="actions">
                   <div class="left-actions">
                     <button class="btn small secondary" data-copy="b64Out">Copy</button>
@@ -699,29 +757,29 @@
         <details>
           <summary>
             <div class="sum-left">
-              <div class="icon">≠</div>
+              <div class="icon">!=</div>
               <div>
                 <div class="sum-title">Text Diff (quick)</div>
                 <div class="hint">Line-based comparison for configs and snippets.</div>
               </div>
             </div>
-            <div class="chev">▾</div>
+            <div class="chev">v</div>
           </summary>
           <div class="content">
             <div class="row two">
               <div>
                 <label>Text A</label>
-                <textarea id="diffA" placeholder="Paste text A…"></textarea>
+                <textarea id="diffA" placeholder="Paste text A..."></textarea>
               </div>
               <div>
                 <label>Text B</label>
-                <textarea id="diffB" placeholder="Paste text B…"></textarea>
+                <textarea id="diffB" placeholder="Paste text B..."></textarea>
               </div>
             </div>
             <div class="actions" style="margin-top:12px;">
               <div class="left-actions">
                 <button class="btn good" id="diffBtn">Compare</button>
-                <button class="btn secondary" id="diffSwapBtn">Swap A/B</button>
+                <button class="btn secondary" id="diffSwapBtn">Swap A and B</button>
               </div>
               <div class="right-actions">
                 <button class="btn secondary" id="diffClearBtn">Clear</button>
@@ -733,7 +791,7 @@
               <label>Differences (A vs B)</label>
               <div class="diffout" id="diffOut" aria-label="Diff output"></div>
               <div class="hint" style="margin-top:8px;">
-                Legend: red = only in A, green = only in B, yellow = changed line.
+                Legend: red only in A, green only in B, yellow changed line.
               </div>
             </div>
           </div>
@@ -748,10 +806,10 @@
               <div class="icon">PW</div>
               <div>
                 <div class="sum-title">Password Strength Checker (offline)</div>
-                <div class="hint">Estimates entropy + crack time. No upload, no storage.</div>
+                <div class="hint">Estimates entropy and crack time. No upload, no storage.</div>
               </div>
             </div>
-            <div class="chev">▾</div>
+            <div class="chev">v</div>
           </summary>
 
           <div class="content">
@@ -787,7 +845,7 @@
 
                   <div class="pwbox">
                     <div><b>Estimated crack time</b></div>
-                    <div class="hint" style="margin-top:6px;">Illustrative only. Depends on hashing + rate limits.</div>
+                    <div class="hint" style="margin-top:6px;">Illustrative only. Depends on hashing and rate limits.</div>
                     <div style="margin-top:10px;"><b>10k guesses/sec:</b> <span id="pwT10k">—</span></div>
                     <div style="margin-top:6px;"><b>1B guesses/sec:</b> <span id="pwT1b">—</span></div>
                     <div style="margin-top:6px;"><b>100B guesses/sec:</b> <span id="pwT100b">—</span></div>
@@ -812,10 +870,18 @@
 
     </div>
 
+    <section class="seo" aria-label="FAQ for YAML to JSON conversion">
+      <h2>FAQ</h2>
+      <div><b>Does this upload my YAML or JSON?</b> No. Everything runs locally in your browser.</div>
+      <div style="margin-top:8px;"><b>What if my YAML fails to parse?</b> The converter will show a parse error. YAML is indentation-sensitive, and tabs can break parsing.</div>
+      <div style="margin-top:8px;"><b>Can I convert JSON to YAML too?</b> Yes. Paste JSON and the page will output YAML as well.</div>
+      <div style="margin-top:8px;"><b>Does it support Kubernetes YAML?</b> Most manifests work fine. If you use multi-document YAML, results depend on how the YAML library interprets it.</div>
+    </section>
+
     <footer>
       <div>Privacy: everything runs locally in your browser. No uploads. No pasted-data storage.</div>
       <div style="margin-top:6px;">
-        If you fork or mirror this, keep it lightweight — that’s the whole point.
+        If you fork or mirror this, keep it lightweight. That is the whole point.
       </div>
     </footer>
   </div>
@@ -1096,7 +1162,7 @@
       });
     });
 
-    // ---------- JSON/YAML ----------
+    // ---------- JSON and YAML ----------
     const jyStatusEl = $("jyStatus");
     function setJYStatus(msg){ jyStatusEl.textContent = msg ? `(${msg})` : ""; }
     function isLikelyJSON(s){ const t = s.trim(); return t.startsWith("{") || t.startsWith("["); }
@@ -1162,7 +1228,7 @@
       jyTimer = setTimeout(convertJsonYaml, 350);
     });
 
-    // ---------- CSV -> MD ----------
+    // ---------- CSV to Markdown ----------
     $("csvSampleBtn").addEventListener("click", () => {
       $("csvInput").value = "name,role,team\nAlice,Admin,Infrastructure\nBob,Helpdesk,EUC\nCharlie,SRE,Platform";
     });
@@ -1216,13 +1282,12 @@
     }
 
     function maskIntToCidr(maskInt){
-      // ensure contiguous ones then zeros
       let seenZero = false;
       let cidr = 0;
       for(let i=31;i>=0;i--){
         const bit = (maskInt >>> i) & 1;
         if(bit === 1){
-          if(seenZero) return null; // non-contiguous
+          if(seenZero) return null;
           cidr++;
         } else {
           seenZero = true;
@@ -1235,7 +1300,6 @@
       const t = String(s || "").trim();
       if(!t) return null;
 
-      // accept "10.0.0.1/24" pasted into mask box
       const slashIdx = t.indexOf("/");
       if(slashIdx !== -1 && slashIdx < t.length - 1){
         const maybe = t.slice(slashIdx + 1).trim();
@@ -1247,7 +1311,6 @@
         }
       }
 
-      // "/24" or "24"
       const m = t.startsWith("/") ? t.slice(1) : t;
       if(/^\d{1,2}$/.test(m)){
         const cidr = Number(m);
@@ -1256,7 +1319,6 @@
         return { cidr, maskInt };
       }
 
-      // dotted mask
       const maskInt = ipv4ToInt(t);
       if(maskInt === null) return null;
       const cidr = maskIntToCidr(maskInt);
@@ -1265,7 +1327,6 @@
     }
 
     function parseIpAndMask(){
-      // allow CIDR pasted into IP input: "10.0.0.5/16"
       const ipRaw = $("subIp").value.trim();
       const maskRaw = $("subMask").value.trim();
 
@@ -1276,24 +1337,18 @@
         const [a,b] = ipRaw.split("/", 2);
         ipPart = a.trim();
         maskPart = "/" + (b || "").trim();
-      } else if(maskRaw.includes("/") && ipRaw && ipRaw.includes("/") === false && maskRaw.includes("." ) === false && maskRaw.startsWith("/") === false){
-        // if user typed "24" in mask box, that's okay (handled below)
-      } else if(maskRaw.includes("/") && ipRaw.includes("/") && ipRaw.split("/").length === 2){
-        // prefer ip box; keep as-is
       }
 
       const ipInt = ipv4ToInt(ipPart);
       if(ipInt === null) return { error: "Invalid IPv4 address." };
 
       const parsed = parseMaskOrCidr(maskPart);
-      if(parsed === null) return { error: "Invalid CIDR/netmask. Try /24 or 255.255.255.0" };
+      if(parsed === null) return { error: "Invalid CIDR or netmask. Try /24 or 255.255.255.0" };
 
-      return { ipInt, ipText: intToIpv4(ipInt), cidr: parsed.cidr, maskInt: parsed.maskInt };
+      return { ipInt, cidr: parsed.cidr, maskInt: parsed.maskInt };
     }
 
-    function formatBigInt(n){
-      return n.toString();
-    }
+    function formatBigInt(n){ return n.toString(); }
 
     function calcSubnet(){
       const p = parseIpAndMask();
@@ -1307,7 +1362,7 @@
       const networkInt = (ipInt & maskInt) >>> 0;
       const broadcastInt = (networkInt | wildcardInt) >>> 0;
 
-      const total = 1n << BigInt(32 - cidr); // total addresses
+      const total = 1n << BigInt(32 - cidr);
 
       let usable;
       let firstInt, lastInt;
@@ -1317,7 +1372,6 @@
         firstInt = networkInt;
         lastInt = networkInt;
       } else if(cidr === 31){
-        // RFC 3021 point-to-point: 2 usable, no network/broadcast semantics for hosts
         usable = 2n;
         firstInt = networkInt;
         lastInt = broadcastInt;
@@ -1373,7 +1427,7 @@
           calcSubnet();
           return;
         }
-        setStatus($("subStatus"), "Clipboard doesn't look like IPv4/CIDR (e.g. 10.0.0.5/16).", "warn");
+        setStatus($("subStatus"), "Clipboard does not look like IPv4/CIDR (e.g. 10.0.0.5/16).", "warn");
       }catch(e){
         setStatus($("subStatus"), "Clipboard read blocked by browser permissions.", "warn");
       }
@@ -1381,7 +1435,6 @@
 
     $("subClearBtn").addEventListener("click", clearSubnet);
 
-    // Enter to calculate
     $("subIp").addEventListener("keydown", (e) => { if(e.key === "Enter"){ e.preventDefault(); calcSubnet(); } });
     $("subMask").addEventListener("keydown", (e) => { if(e.key === "Enter"){ e.preventDefault(); calcSubnet(); } });
 
@@ -1402,7 +1455,7 @@
       setTimeout(()=> btn.textContent = prev, 900);
     });
 
-    // ---------- Base64 / URL ----------
+    // ---------- Base64 and URL ----------
     function setB64Out(text, msg, kind="good"){
       $("b64Out").value = text;
       setStatus($("b64Status"), msg, kind);
@@ -1477,7 +1530,7 @@
       setStatus($("diffStatus"), "Ready.");
     });
 
-    // ---------- Password checker (zxcvbn-backed when available) ----------
+    // ---------- Password checker ----------
     function charSpace(pw){
       let space = 0;
       if(/[a-z]/.test(pw)) space += 26;
@@ -1578,7 +1631,7 @@
           if(z.feedback.warning) zTips.push(z.feedback.warning);
           if(Array.isArray(z.feedback.suggestions)) zTips.push(...z.feedback.suggestions);
         }
-        zTips.push("Use a password manager + unique passwords per site.");
+        zTips.push("Use a password manager and unique passwords per site.");
         zTips.push("Prefer passphrases (4+ random words) over clever variations.");
 
         let spaceLabel = [];
