@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
   <!-- Primary SEO -->
-  <title>YAML to JSON Converter (Runs Locally) - Sysadmin Quick Tools</title>
-  <meta name="description" content="YAML to JSON converter that runs locally in your browser. Also includes JSON to YAML, CSV to Markdown, subnet calculator, Base64 and URL tools, text diff, and an offline password strength checker. Nothing is uploaded." />
+  <title>SysAdmin Quick Tools — Local JSON↔YAML, CSV→Markdown, Subnet Calc, Base64/URL, Diff, Password Check</title>
+  <meta name="description" content="A fast, single-page toolkit for sysadmins that runs locally in your browser: JSON↔YAML, CSV→Markdown, subnet calculator, Base64/URL encode-decode, text diff, and an offline password strength checker. Nothing is uploaded." />
   <link rel="canonical" href="https://www.spriteguide.com/" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <meta name="theme-color" content="#0b1020" />
@@ -18,33 +18,32 @@
 
   <!-- Open Graph / Social -->
   <meta property="og:site_name" content="SysAdmin Quick Tools" />
-  <meta property="og:title" content="YAML to JSON Converter - SysAdmin Quick Tools" />
-  <meta property="og:description" content="Fast YAML to JSON converter that runs locally in your browser. Also includes JSON to YAML, CSV to Markdown, subnet math, Base64 and URL tools, diff, and offline password strength checks. Nothing is uploaded." />
+  <meta property="og:title" content="SysAdmin Quick Tools — Local, single-page ops toolkit" />
+  <meta property="og:description" content="Client-side sysadmin toolkit: JSON↔YAML, CSV→Markdown, subnet math, Base64/URL, quick diff, and offline password strength checks. Nothing is uploaded." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.spriteguide.com/" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="YAML to JSON Converter - SysAdmin Quick Tools" />
-  <meta name="twitter:description" content="Fast YAML to JSON converter that runs locally in your browser. Also includes JSON to YAML, CSV to Markdown, subnet math, Base64 and URL tools, diff, and offline password strength checks. Nothing is uploaded." />
+  <meta name="twitter:title" content="SysAdmin Quick Tools" />
+  <meta name="twitter:description" content="Client-side sysadmin toolkit: JSON↔YAML, CSV→Markdown, subnet math, Base64/URL, quick diff, and offline password strength checks. Nothing is uploaded." />
 
   <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@type":"WebApplication",
-    "name":"YAML to JSON Converter - SysAdmin Quick Tools",
+    "name":"SysAdmin Quick Tools",
     "url":"https://www.spriteguide.com/",
     "applicationCategory":"DeveloperApplication",
     "operatingSystem":"Any",
-    "description":"YAML to JSON converter that runs locally in your browser. Also includes JSON to YAML, CSV to Markdown table, subnet calculator, Base64 and URL encoder/decoder, quick text diff, and offline password strength checker. Nothing is uploaded.",
+    "description":"A fast, single-page toolkit for sysadmins that runs locally in your browser: JSON↔YAML converter, CSV→Markdown table, subnet calculator, Base64/URL encoder/decoder, quick text diff, and offline password strength checker. Nothing is uploaded.",
     "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
     "featureList":[
-      "YAML to JSON converter",
-      "JSON to YAML converter",
-      "CSV to Markdown table converter",
+      "JSON↔YAML converter",
+      "CSV→Markdown table converter",
       "Subnet calculator (IPv4)",
-      "Base64 encoder and decoder",
-      "URL encoder and decoder",
+      "Base64 encoder/decoder",
+      "URL encoder/decoder",
       "Text diff",
       "Offline password strength checker"
     ]
@@ -414,28 +413,7 @@
       margin:10px 0;
     }
 
-    /* ---- SEO helper sections ---- */
-    .seo{
-      max-width:920px;
-      margin:0 auto 14px;
-      padding:12px 14px;
-      border:1px solid rgba(34,48,88,.75);
-      border-radius:14px;
-      background:rgba(8,12,25,.25);
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.5;
-    }
-    .seo h2{
-      margin:0 0 8px;
-      font-size:14px;
-      color:var(--text);
-      letter-spacing:.1px;
-    }
-    .seo ul{
-      margin:8px 0 0;
-      padding-left:18px;
-    }
+    /* Screen-reader only (for a tiny bit of indexable copy without extra sections) */
     .sr-only{
       position:absolute;
       width:1px;
@@ -454,7 +432,7 @@
   <div class="wrap">
     <header>
       <div class="title">
-        <h1>YAML to JSON Converter</h1>
+        <h1>SysAdmin Quick Tools</h1>
         <div class="pill">Runs locally in your browser. Nothing is uploaded.</div>
       </div>
       <div class="topbar">
@@ -490,36 +468,27 @@
     </noscript>
 
     <div class="subhead">
-      Convert YAML to JSON instantly, locally, and privately.
+      A single-page toolbox for quick ops work — paste, convert, copy, move on.
     </div>
 
     <div class="lead">
-      Paste YAML on the left and get formatted JSON on the right. You can also paste JSON and convert to YAML.
-      This is a single-page toolbox for sysadmins with additional converters and quick utilities.
+      JSON↔YAML, CSV→Markdown, subnet math, Base64/URL helpers, a quick line diff, and an offline password strength checker — all local.
     </div>
 
+    <p class="sr-only">
+      SysAdmin Quick Tools is a free, local toolkit: YAML to JSON converter, JSON to YAML converter, CSV to Markdown table converter,
+      IPv4 subnet calculator, Base64 encoder/decoder, URL encoder/decoder, text diff, and an offline password strength checker.
+      Nothing is uploaded.
+    </p>
+
     <div class="togglebar">
-      <span class="chip" data-jump="jsonyaml">YAML to JSON</span>
-      <span class="chip" data-jump="csvmd">CSV to Markdown</span>
+      <span class="chip" data-jump="jsonyaml">JSON ⇄ YAML</span>
+      <span class="chip" data-jump="csvmd">CSV → Markdown</span>
       <span class="chip" data-jump="subnet">Subnet</span>
-      <span class="chip" data-jump="b64">Base64 and URL</span>
+      <span class="chip" data-jump="b64">Base64 / URL</span>
       <span class="chip" data-jump="diff">Diff</span>
       <span class="chip" data-jump="pwcheck">Password</span>
     </div>
-
-    <!-- Extra indexable copy without changing your one-page approach -->
-    <section class="seo" aria-label="About the YAML to JSON converter">
-      <h2>About this YAML to JSON converter</h2>
-      <div>
-        This YAML to JSON converter runs entirely in your browser. Nothing is uploaded and the page does not store your pasted data.
-        It is designed for quick config work, Kubernetes manifests, Ansible variables, and everyday troubleshooting.
-      </div>
-      <ul>
-        <li>Input: YAML or JSON</li>
-        <li>Output: pretty JSON and YAML</li>
-        <li>Private by default: local processing only</li>
-      </ul>
-    </section>
 
     <div class="grid">
 
@@ -530,17 +499,17 @@
             <div class="sum-left">
               <div class="icon">{}</div>
               <div>
-                <div class="sum-title">YAML to JSON Converter (and JSON to YAML)</div>
-                <div class="hint">Auto-detect input. Pretty JSON plus YAML output. Highlights parse errors.</div>
+                <div class="sum-title">JSON ⇄ YAML Converter</div>
+                <div class="hint">Auto-detect input. Pretty JSON + YAML output. Highlights parse errors.</div>
               </div>
             </div>
-            <div class="chev">v</div>
+            <div class="chev">▾</div>
           </summary>
 
           <div class="content">
             <div class="row">
               <div>
-                <label>Paste YAML or JSON here <span class="hint" id="jyStatus"></span></label>
+                <label>Paste JSON or YAML here <span class="hint" id="jyStatus"></span></label>
                 <textarea id="jyInput" placeholder='hello: world&#10;items:&#10;  - one&#10;  - two&#10;&#10;or&#10;&#10;{"hello":"world"}'></textarea>
                 <div class="actions">
                   <div class="left-actions">
@@ -591,11 +560,11 @@
             <div class="sum-left">
               <div class="icon">CSV</div>
               <div>
-                <div class="sum-title">CSV to Markdown Table</div>
-                <div class="hint">Paste CSV. Outputs GitHub and Obsidian-ready Markdown table.</div>
+                <div class="sum-title">CSV → Markdown Table</div>
+                <div class="hint">Paste CSV. Outputs GitHub/Obsidian-ready Markdown table.</div>
               </div>
             </div>
-            <div class="chev">v</div>
+            <div class="chev">▾</div>
           </summary>
           <div class="content">
             <div class="row">
@@ -644,7 +613,7 @@
                 <div class="hint">Enter IP and CIDR or netmask. Outputs network, broadcast, usable range, wildcard, and host counts.</div>
               </div>
             </div>
-            <div class="chev">v</div>
+            <div class="chev">▾</div>
           </summary>
 
           <div class="content">
@@ -713,16 +682,16 @@
             <div class="sum-left">
               <div class="icon">b64</div>
               <div>
-                <div class="sum-title">Base64 and URL Encoder and Decoder</div>
+                <div class="sum-title">Base64 / URL Encoder & Decoder</div>
                 <div class="hint">UTF-8 safe. Handy for headers, tokens, and quick debugging.</div>
               </div>
             </div>
-            <div class="chev">v</div>
+            <div class="chev">▾</div>
           </summary>
           <div class="content">
             <div class="row">
               <div>
-                <label>Encode and decode text</label>
+                <label>Encode / decode text</label>
                 <textarea id="b64Input" placeholder="Paste text here..."></textarea>
                 <div class="actions">
                   <div class="left-actions">
@@ -757,13 +726,13 @@
         <details>
           <summary>
             <div class="sum-left">
-              <div class="icon">!=</div>
+              <div class="icon">≠</div>
               <div>
                 <div class="sum-title">Text Diff (quick)</div>
                 <div class="hint">Line-based comparison for configs and snippets.</div>
               </div>
             </div>
-            <div class="chev">v</div>
+            <div class="chev">▾</div>
           </summary>
           <div class="content">
             <div class="row two">
@@ -779,7 +748,7 @@
             <div class="actions" style="margin-top:12px;">
               <div class="left-actions">
                 <button class="btn good" id="diffBtn">Compare</button>
-                <button class="btn secondary" id="diffSwapBtn">Swap A and B</button>
+                <button class="btn secondary" id="diffSwapBtn">Swap A/B</button>
               </div>
               <div class="right-actions">
                 <button class="btn secondary" id="diffClearBtn">Clear</button>
@@ -809,7 +778,7 @@
                 <div class="hint">Estimates entropy and crack time. No upload, no storage.</div>
               </div>
             </div>
-            <div class="chev">v</div>
+            <div class="chev">▾</div>
           </summary>
 
           <div class="content">
@@ -869,14 +838,6 @@
       </div>
 
     </div>
-
-    <section class="seo" aria-label="FAQ for YAML to JSON conversion">
-      <h2>FAQ</h2>
-      <div><b>Does this upload my YAML or JSON?</b> No. Everything runs locally in your browser.</div>
-      <div style="margin-top:8px;"><b>What if my YAML fails to parse?</b> The converter will show a parse error. YAML is indentation-sensitive, and tabs can break parsing.</div>
-      <div style="margin-top:8px;"><b>Can I convert JSON to YAML too?</b> Yes. Paste JSON and the page will output YAML as well.</div>
-      <div style="margin-top:8px;"><b>Does it support Kubernetes YAML?</b> Most manifests work fine. If you use multi-document YAML, results depend on how the YAML library interprets it.</div>
-    </section>
 
     <footer>
       <div>Privacy: everything runs locally in your browser. No uploads. No pasted-data storage.</div>
