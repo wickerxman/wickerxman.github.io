@@ -218,6 +218,7 @@
       font-size:12px;color:var(--muted);
       padding:8px 10px;border:1px dashed rgba(34,48,88,.85);
       border-radius:10px;background:rgba(8,12,25,.35);
+      white-space:pre-wrap;
     }
     .status.good{border-color:rgba(61,220,151,.45); color:rgba(61,220,151,.95)}
     .status.bad{border-color:rgba(255,107,107,.45); color:rgba(255,107,107,.95)}
@@ -472,17 +473,18 @@
     </div>
 
     <div class="lead">
-      JSON↔YAML, CSV→Markdown, subnet math, Base64/URL helpers, a quick line diff, and an offline password strength checker — all local.
+      JSON↔YAML, YAML formatting, CSV→Markdown, subnet math, Base64/URL helpers, a quick line diff, and an offline password strength checker — all local.
     </div>
 
     <p class="sr-only">
-      SysAdmin Quick Tools is a free, local toolkit: YAML to JSON converter, JSON to YAML converter, CSV to Markdown table converter,
-      IPv4 subnet calculator, Base64 encoder/decoder, URL encoder/decoder, text diff, and an offline password strength checker.
-      Nothing is uploaded.
+      SysAdmin Quick Tools is a free, local toolkit: YAML to JSON converter, JSON to YAML converter, YAML formatter,
+      CSV to Markdown table converter, IPv4 subnet calculator, Base64 encoder/decoder, URL encoder/decoder, text diff,
+      and an offline password strength checker. Nothing is uploaded.
     </p>
 
     <div class="togglebar">
       <span class="chip" data-jump="jsonyaml">JSON ⇄ YAML</span>
+      <span class="chip" data-jump="yamlfix">YAML Fix</span>
       <span class="chip" data-jump="csvmd">CSV → Markdown</span>
       <span class="chip" data-jump="subnet">Subnet</span>
       <span class="chip" data-jump="b64">Base64 / URL</span>
@@ -549,6 +551,64 @@
             </div>
 
             <div class="adslot">[Ad slot placeholder. Keep ads minimal and away from the textareas]</div>
+          </div>
+        </details>
+      </div>
+
+      <!-- YAML Formatter / Fixer (NEW) -->
+      <div class="card" id="yamlfix">
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon">Y</div>
+              <div>
+                <div class="sum-title">YAML Formatter / Fixer</div>
+                <div class="hint">Checks YAML syntax + basic spacing issues. Outputs normalized YAML.</div>
+              </div>
+            </div>
+            <div class="chev">▾</div>
+          </summary>
+
+          <div class="content">
+            <div class="row">
+              <div>
+                <label>
+                  Paste YAML here
+                  <span class="hint" id="yfStatus"></span>
+                </label>
+                <textarea id="yfInput" placeholder="hello: world&#10;items:&#10;  - one&#10;  - two"></textarea>
+
+                <div class="actions">
+                  <div class="left-actions">
+                    <button class="btn good" id="yfFormatBtn">Format / Fix</button>
+                    <button class="btn secondary" id="yfValidateBtn">Validate only</button>
+                  </div>
+                  <div class="right-actions">
+                    <button class="btn secondary" id="yfClearBtn">Clear</button>
+                  </div>
+                </div>
+
+                <div class="status" id="yfWarnBox">Ready.</div>
+              </div>
+
+              <div>
+                <label>Formatted YAML</label>
+                <textarea id="yfOut" placeholder="Formatted YAML output..." readonly></textarea>
+
+                <div class="actions">
+                  <div class="left-actions">
+                    <button class="btn small secondary" data-copy="yfOut">Copy</button>
+                  </div>
+                  <div class="right-actions">
+                    <span class="hint">Readonly</span>
+                  </div>
+                </div>
+
+                <div class="hint" style="margin-top:8px;">
+                  Notes: comments/order may change when YAML is re-serialized. Anchors/aliases are expanded (noRefs).
+                </div>
+              </div>
+            </div>
           </div>
         </details>
       </div>
@@ -1072,6 +1132,7 @@
     $("clearAllBtn").addEventListener("click", () => {
       [
         "jyInput","jyJsonOut","jyYamlOut",
+        "yfInput","yfOut",
         "csvInput","mdOut",
         "subIp","subMask",
         "b64Input","b64Out",
@@ -1085,6 +1146,8 @@
       setStatus($("b64Status"), "Ready.");
       setStatus($("diffStatus"), "Ready.");
       setStatus($("pwStatusBox"), "Ready.");
+      setStatus($("yfWarnBox"), "Ready.");
+      $("yfStatus").textContent = "";
 
       // Reset subnet outputs
       ["subNetwork","subBroadcast","subFirst","subLast","subCidr","subNetmask","subWildcard","subTotal","subUsable"]
@@ -1187,6 +1250,133 @@
     $("jyInput").addEventListener("input", () => {
       clearTimeout(jyTimer);
       jyTimer = setTimeout(convertJsonYaml, 350);
+    });
+
+    // ---------- YAML Formatter / Fixer (NEW) ----------
+    function lintYamlText(yamlText){
+      const warnings = [];
+      const lines = String(yamlText || "").replace(/\r\n/g, "\n").split("\n");
+
+      for(let i=0;i<lines.length;i++){
+        const ln = i + 1;
+        const line = lines[i];
+
+        if(/[ \t]+$/.test(line)){
+          warnings.push(`Line ${ln}: trailing whitespace`);
+        }
+        if(/^\t+/.test(line)){
+          warnings.push(`Line ${ln}: tab indentation found (use spaces)`);
+        }
+
+        const leading = line.match(/^[\t ]+/)?.[0] || "";
+        if(leading.includes("\t") && leading.includes(" ")){
+          warnings.push(`Line ${ln}: mixed tabs/spaces in indentation`);
+        }
+
+        const trimmed = line.trim();
+        if(trimmed && !trimmed.startsWith("#")){
+          const spacesOnly = leading.replace(/\t/g, "  ");
+          const indent = spacesOnly.length;
+          if(indent % 2 !== 0){
+            warnings.push(`Line ${ln}: indentation not a multiple of 2 (found ${indent})`);
+          }
+        }
+
+        if(line.length > 140){
+          warnings.push(`Line ${ln}: very long line (${line.length} chars)`);
+        }
+      }
+
+      return warnings;
+    }
+
+    function setYFStatus(msg, kind=""){
+      const el = $("yfStatus");
+      el.textContent = msg ? `(${msg})` : "";
+      if(msg && $("yfWarnBox")){
+        setStatus($("yfWarnBox"), msg, kind);
+      }
+    }
+
+    function validateYamlOnly(){
+      const input = $("yfInput").value;
+      $("yfOut").value = "";
+
+      if(!input.trim()){
+        setYFStatus("paste YAML", "warn");
+        setStatus($("yfWarnBox"), "Ready.", "");
+        return;
+      }
+
+      const warnings = lintYamlText(input);
+
+      try{
+        if(typeof jsyaml === "undefined") throw new Error("YAML library not loaded (js-yaml).");
+        jsyaml.load(input);
+        if(warnings.length){
+          setStatus($("yfWarnBox"), `Valid YAML. Warnings:\n- ${warnings.join("\n- ")}`, "warn");
+          setYFStatus("valid (with warnings)", "warn");
+        } else {
+          setStatus($("yfWarnBox"), "Valid YAML. No spacing warnings found.", "good");
+          setYFStatus("valid", "good");
+        }
+      }catch(e){
+        setStatus($("yfWarnBox"), `Syntax error: ${e.message}`, "bad");
+        setYFStatus("syntax error", "bad");
+      }
+    }
+
+    function formatYamlFix(){
+      const input = $("yfInput").value;
+      $("yfOut").value = "";
+
+      if(!input.trim()){
+        setYFStatus("paste YAML", "warn");
+        setStatus($("yfWarnBox"), "Ready.", "");
+        return;
+      }
+
+      const warnings = lintYamlText(input);
+
+      try{
+        if(typeof jsyaml === "undefined") throw new Error("YAML library not loaded (js-yaml).");
+        const obj = jsyaml.load(input);
+
+        const out = jsyaml.dump(obj, {
+          indent: 2,
+          noRefs: true,
+          lineWidth: 120,
+          sortKeys: false
+        });
+
+        $("yfOut").value = out;
+
+        if(warnings.length){
+          setStatus($("yfWarnBox"), `Formatted. Original had warnings:\n- ${warnings.join("\n- ")}`, "warn");
+          setYFStatus("formatted (warnings existed)", "warn");
+        } else {
+          setStatus($("yfWarnBox"), "Formatted. No spacing warnings found.", "good");
+          setYFStatus("formatted", "good");
+        }
+      }catch(e){
+        setStatus($("yfWarnBox"), `Syntax error: ${e.message}`, "bad");
+        setYFStatus("syntax error", "bad");
+      }
+    }
+
+    $("yfFormatBtn").addEventListener("click", formatYamlFix);
+    $("yfValidateBtn").addEventListener("click", validateYamlOnly);
+    $("yfClearBtn").addEventListener("click", () => {
+      $("yfInput").value = "";
+      $("yfOut").value = "";
+      $("yfStatus").textContent = "";
+      setStatus($("yfWarnBox"), "Ready.");
+    });
+
+    let yfTimer = null;
+    $("yfInput").addEventListener("input", () => {
+      clearTimeout(yfTimer);
+      yfTimer = setTimeout(validateYamlOnly, 450);
     });
 
     // ---------- CSV to Markdown ----------
