@@ -7,14 +7,22 @@
   <!-- Primary SEO -->
   <title>SysAdmin Quick Tools — Local JSON↔YAML, CSV→Markdown, Subnet Calc, Base64/URL, Diff, Password Check</title>
   <meta name="description" content="A fast, single-page toolkit for sysadmins that runs locally in your browser: JSON↔YAML, CSV→Markdown, subnet calculator, Base64/URL encode-decode, text diff, and an offline password strength checker. Nothing is uploaded." />
+  <meta name="keywords" content="JSON to YAML, YAML to JSON, CSV to Markdown, subnet calculator, Base64 encoder, Base64 decoder, URL encoder, URL decoder, password strength checker, sysadmin tools, DevOps tools, local tools" />
   <link rel="canonical" href="https://www.spriteguide.com/" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <meta name="theme-color" content="#0b1020" />
+  <meta name="author" content="SysAdmin" />
+  <meta name="language" content="English" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
   <!-- Favicons (optional files) -->
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <!-- Performance hints for CDN resources -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
 
   <!-- Open Graph / Social -->
   <meta property="og:site_name" content="SysAdmin Quick Tools" />
@@ -22,6 +30,7 @@
   <meta property="og:description" content="Client-side sysadmin toolkit: JSON↔YAML, CSV→Markdown, subnet math, Base64/URL, quick diff, and offline password strength checks. Nothing is uploaded." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.spriteguide.com/" />
+  <meta property="og:locale" content="en_US" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SysAdmin Quick Tools" />
@@ -38,6 +47,11 @@
     "operatingSystem":"Any",
     "description":"A fast, single-page toolkit for sysadmins that runs locally in your browser: JSON↔YAML converter, CSV→Markdown table, subnet calculator, Base64/URL encoder/decoder, quick text diff, and offline password strength checker. Nothing is uploaded.",
     "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+    "creator":{"@type":"Person","name":"SysAdmin"},
+    "potentialAction":{
+      "@type":"UseAction",
+      "target":"https://www.spriteguide.com/"
+    },
     "featureList":[
       "JSON↔YAML converter",
       "CSV→Markdown table converter",
@@ -45,8 +59,12 @@
       "Base64 encoder/decoder",
       "URL encoder/decoder",
       "Text diff",
-      "Offline password strength checker"
-    ]
+      "Offline password strength checker",
+      "YAML formatter",
+      "Epoch time converter"
+    ],
+    "browserRequirements":"Requires JavaScript",
+    "isAccessibleForFree":true
   }
   </script>
 
@@ -444,7 +462,7 @@
     </header>
 
     <!-- LIVE TICKER -->
-    <div class="ticker" aria-label="Live sysadmin ticker">
+    <div class="ticker" aria-label="Live sysadmin ticker" role="region">
       <div class="tick-left">
         <div class="tick-item" title="Current UTC time (updates locally)">
           <b>UTC</b> <span id="tickUtc">—</span>
@@ -479,18 +497,18 @@
     <p class="sr-only">
       SysAdmin Quick Tools is a free, local toolkit: YAML to JSON converter, JSON to YAML converter, YAML formatter,
       CSV to Markdown table converter, IPv4 subnet calculator, Base64 encoder/decoder, URL encoder/decoder, text diff,
-      and an offline password strength checker. Nothing is uploaded.
+      and an offline password strength checker. Nothing is uploaded to any server. All processing happens locally in your browser.
     </p>
 
-    <div class="togglebar">
-      <span class="chip" data-jump="jsonyaml">JSON ⇄ YAML</span>
-      <span class="chip" data-jump="yamlfix">YAML Fix</span>
-      <span class="chip" data-jump="csvmd">CSV → Markdown</span>
-      <span class="chip" data-jump="subnet">Subnet</span>
-      <span class="chip" data-jump="b64">Base64 / URL</span>
-      <span class="chip" data-jump="diff">Diff</span>
-      <span class="chip" data-jump="pwcheck">Password</span>
-    </div>
+    <nav class="togglebar" aria-label="Tool navigation">
+      <span class="chip" data-jump="jsonyaml" role="button" tabindex="0">JSON ⇄ YAML</span>
+      <span class="chip" data-jump="yamlfix" role="button" tabindex="0">YAML Fix</span>
+      <span class="chip" data-jump="csvmd" role="button" tabindex="0">CSV → Markdown</span>
+      <span class="chip" data-jump="subnet" role="button" tabindex="0">Subnet</span>
+      <span class="chip" data-jump="b64" role="button" tabindex="0">Base64 / URL</span>
+      <span class="chip" data-jump="diff" role="button" tabindex="0">Diff</span>
+      <span class="chip" data-jump="pwcheck" role="button" tabindex="0">Password</span>
+    </nav>
 
     <div class="grid">
 
@@ -903,6 +921,9 @@
       <div>Privacy: everything runs locally in your browser. No uploads. No pasted-data storage.</div>
       <div style="margin-top:6px;">
         If you fork or mirror this, keep it lightweight. That is the whole point.
+      </div>
+      <div style="margin-top:10px; font-size:11px; opacity:0.7;">
+        <p>SysAdmin Quick Tools: <strong>JSON to YAML, YAML to JSON, CSV to Markdown, subnet calculator, Base64/URL encoding, text diff, password strength checker</strong></p>
       </div>
     </footer>
   </div>
