@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
   <!-- Primary SEO -->
-  <title>SysAdmin Quick Tools — Local JSON↔YAML, CSV→Markdown, Subnet Calc, Base64/URL, Diff, Password Check</title>
-  <meta name="description" content="A fast, single-page toolkit for sysadmins that runs locally in your browser: JSON↔YAML, CSV→Markdown, subnet calculator, Base64/URL encode-decode, text diff, and an offline password strength checker. Nothing is uploaded." />
-  <meta name="keywords" content="JSON to YAML, YAML to JSON, CSV to Markdown, subnet calculator, Base64 encoder, Base64 decoder, URL encoder, URL decoder, password strength checker, sysadmin tools, DevOps tools, local tools" />
+  <title>SysAdmin Quick Tools — Local YAML Converter, Subnet Calc, Password Strength Checker</title>
+  <meta name="description" content="A fast, focused toolkit for sysadmins and DevOps: YAML converter, subnet calculator, and offline password strength checker. All processing is local. Nothing is uploaded." />
+  <meta name="keywords" content="YAML to JSON, YAML converter, YAML formatter, subnet calculator, IPv4, password strength checker, password entropy, sysadmin tools, DevOps tools, local tools, offline tools" />
   <link rel="canonical" href="https://www.spriteguide.com/" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <meta name="theme-color" content="#0b1020" />
@@ -27,14 +27,14 @@
   <!-- Open Graph / Social -->
   <meta property="og:site_name" content="SysAdmin Quick Tools" />
   <meta property="og:title" content="SysAdmin Quick Tools — Local, single-page ops toolkit" />
-  <meta property="og:description" content="Client-side sysadmin toolkit: JSON↔YAML, CSV→Markdown, subnet math, Base64/URL, quick diff, and offline password strength checks. Nothing is uploaded." />
+  <meta property="og:description" content="Focused sysadmin toolkit: YAML converter, subnet calculator, and offline password strength checker. Local processing, nothing uploaded." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.spriteguide.com/" />
   <meta property="og:locale" content="en_US" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SysAdmin Quick Tools" />
-  <meta name="twitter:description" content="Client-side sysadmin toolkit: JSON↔YAML, CSV→Markdown, subnet math, Base64/URL, quick diff, and offline password strength checks. Nothing is uploaded." />
+  <meta name="twitter:description" content="Focused sysadmin toolkit: YAML converter, subnet calculator, and offline password strength checker. Local processing, nothing uploaded." />
 
   <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
@@ -45,7 +45,7 @@
     "url":"https://www.spriteguide.com/",
     "applicationCategory":"DeveloperApplication",
     "operatingSystem":"Any",
-    "description":"A fast, single-page toolkit for sysadmins that runs locally in your browser: JSON↔YAML converter, CSV→Markdown table, subnet calculator, Base64/URL encoder/decoder, quick text diff, and offline password strength checker. Nothing is uploaded.",
+    "description":"A fast, focused toolkit for sysadmins and DevOps: YAML converter, subnet calculator, and offline password strength checker. All processing is local. Nothing is uploaded.",
     "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
     "creator":{"@type":"Person","name":"SysAdmin"},
     "potentialAction":{
@@ -54,14 +54,9 @@
     },
     "featureList":[
       "JSON↔YAML converter",
-      "CSV→Markdown table converter",
+      "YAML formatter and validator",
       "Subnet calculator (IPv4)",
-      "Base64 encoder/decoder",
-      "URL encoder/decoder",
-      "Text diff",
-      "Offline password strength checker",
-      "YAML formatter",
-      "Epoch time converter"
+      "Offline password strength checker with entropy estimation"
     ],
     "browserRequirements":"Requires JavaScript",
     "isAccessibleForFree":true
@@ -491,23 +486,19 @@
     </div>
 
     <div class="lead">
-      JSON↔YAML, YAML formatting, CSV→Markdown, subnet math, Base64/URL helpers, a quick line diff, and an offline password strength checker — all local.
+      YAML converter and formatter, IPv4 subnet calculator, and an offline password strength checker with entropy estimation — all local, nothing uploaded.
     </div>
 
     <p class="sr-only">
-      SysAdmin Quick Tools is a free, local toolkit: YAML to JSON converter, JSON to YAML converter, YAML formatter,
-      CSV to Markdown table converter, IPv4 subnet calculator, Base64 encoder/decoder, URL encoder/decoder, text diff,
-      and an offline password strength checker. Nothing is uploaded to any server. All processing happens locally in your browser.
+      SysAdmin Quick Tools is a free, local toolkit: YAML to JSON converter, JSON to YAML converter, YAML formatter and validator,
+      IPv4 subnet calculator, and an offline password strength checker with entropy estimation. Nothing is uploaded to any server. All processing happens locally in your browser.
     </p>
 
     <nav class="togglebar" aria-label="Tool navigation">
       <span class="chip" data-jump="jsonyaml" role="button" tabindex="0">JSON ⇄ YAML</span>
       <span class="chip" data-jump="yamlfix" role="button" tabindex="0">YAML Fix</span>
-      <span class="chip" data-jump="csvmd" role="button" tabindex="0">CSV → Markdown</span>
-      <span class="chip" data-jump="subnet" role="button" tabindex="0">Subnet</span>
-      <span class="chip" data-jump="b64" role="button" tabindex="0">Base64 / URL</span>
-      <span class="chip" data-jump="diff" role="button" tabindex="0">Diff</span>
-      <span class="chip" data-jump="pwcheck" role="button" tabindex="0">Password</span>
+      <span class="chip" data-jump="subnet" role="button" tabindex="0">Subnet Calc</span>
+      <span class="chip" data-jump="pwcheck" role="button" tabindex="0">Password Check</span>
     </nav>
 
     <div class="grid">
@@ -631,55 +622,6 @@
         </details>
       </div>
 
-      <!-- CSV to Markdown -->
-      <div class="card" id="csvmd">
-        <details>
-          <summary>
-            <div class="sum-left">
-              <div class="icon">CSV</div>
-              <div>
-                <div class="sum-title">CSV → Markdown Table</div>
-                <div class="hint">Paste CSV. Outputs GitHub/Obsidian-ready Markdown table.</div>
-              </div>
-            </div>
-            <div class="chev">▾</div>
-          </summary>
-          <div class="content">
-            <div class="row">
-              <div>
-                <label>Paste CSV data</label>
-                <textarea id="csvInput" placeholder='name,role&#10;Alice,Admin&#10;Bob,Helpdesk'></textarea>
-                <div class="actions">
-                  <div class="left-actions">
-                    <button class="btn good" id="csvConvertBtn">Convert to Markdown</button>
-                    <button class="btn secondary" id="csvSampleBtn">Sample</button>
-                  </div>
-                  <div class="right-actions">
-                    <label class="hint" style="margin:0;">
-                      <input type="checkbox" id="csvHasHeader" checked style="transform:translateY(1px);"> Header row
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label>Markdown Table Output</label>
-                <textarea id="mdOut" placeholder="Markdown table output..." readonly></textarea>
-                <div class="actions">
-                  <div class="left-actions">
-                    <button class="btn small secondary" data-copy="mdOut">Copy</button>
-                  </div>
-                  <div class="right-actions">
-                    <button class="btn secondary" id="csvClearBtn">Clear</button>
-                  </div>
-                </div>
-                <div class="status" id="csvStatus">Ready.</div>
-              </div>
-            </div>
-          </div>
-        </details>
-      </div>
-
       <!-- Subnet calculator -->
       <div class="card" id="subnet">
         <details>
@@ -747,98 +689,6 @@
                     <button class="btn small secondary" id="subCopySummaryBtn">Copy summary</button>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </details>
-      </div>
-
-      <!-- Base64 and URL -->
-      <div class="card" id="b64">
-        <details>
-          <summary>
-            <div class="sum-left">
-              <div class="icon">b64</div>
-              <div>
-                <div class="sum-title">Base64 / URL Encoder & Decoder</div>
-                <div class="hint">UTF-8 safe. Handy for headers, tokens, and quick debugging.</div>
-              </div>
-            </div>
-            <div class="chev">▾</div>
-          </summary>
-          <div class="content">
-            <div class="row">
-              <div>
-                <label>Encode / decode text</label>
-                <textarea id="b64Input" placeholder="Paste text here..."></textarea>
-                <div class="actions">
-                  <div class="left-actions">
-                    <button class="btn good" id="b64EncodeBtn">Base64 Encode</button>
-                    <button class="btn warn" id="b64DecodeBtn">Base64 Decode</button>
-                    <button class="btn secondary" id="urlEncodeBtn">URL Encode</button>
-                    <button class="btn secondary" id="urlDecodeBtn">URL Decode</button>
-                  </div>
-                  <div class="right-actions">
-                    <button class="btn secondary" id="b64ClearBtn">Clear</button>
-                  </div>
-                </div>
-                <div class="status" id="b64Status">Ready.</div>
-              </div>
-
-              <div>
-                <label>Result</label>
-                <textarea id="b64Out" placeholder="Result..." readonly></textarea>
-                <div class="actions">
-                  <div class="left-actions">
-                    <button class="btn small secondary" data-copy="b64Out">Copy</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </details>
-      </div>
-
-      <!-- Diff -->
-      <div class="card" id="diff">
-        <details>
-          <summary>
-            <div class="sum-left">
-              <div class="icon">≠</div>
-              <div>
-                <div class="sum-title">Text Diff (quick)</div>
-                <div class="hint">Line-based comparison for configs and snippets.</div>
-              </div>
-            </div>
-            <div class="chev">▾</div>
-          </summary>
-          <div class="content">
-            <div class="row two">
-              <div>
-                <label>Text A</label>
-                <textarea id="diffA" placeholder="Paste text A..."></textarea>
-              </div>
-              <div>
-                <label>Text B</label>
-                <textarea id="diffB" placeholder="Paste text B..."></textarea>
-              </div>
-            </div>
-            <div class="actions" style="margin-top:12px;">
-              <div class="left-actions">
-                <button class="btn good" id="diffBtn">Compare</button>
-                <button class="btn secondary" id="diffSwapBtn">Swap A/B</button>
-              </div>
-              <div class="right-actions">
-                <button class="btn secondary" id="diffClearBtn">Clear</button>
-              </div>
-            </div>
-            <div class="status" id="diffStatus">Ready.</div>
-
-            <div style="margin-top:12px;">
-              <label>Differences (A vs B)</label>
-              <div class="diffout" id="diffOut" aria-label="Diff output"></div>
-              <div class="hint" style="margin-top:8px;">
-                Legend: red only in A, green only in B, yellow changed line.
               </div>
             </div>
           </div>
@@ -923,7 +773,7 @@
         If you fork or mirror this, keep it lightweight. That is the whole point.
       </div>
       <div style="margin-top:10px; font-size:11px; opacity:0.7;">
-        <p>SysAdmin Quick Tools: <strong>JSON to YAML, YAML to JSON, CSV to Markdown, subnet calculator, Base64/URL encoding, text diff, password strength checker</strong></p>
+        <p>SysAdmin Quick Tools: <strong>YAML converter, YAML formatter, subnet calculator, password strength checker</strong></p>
       </div>
     </footer>
   </div>
@@ -963,107 +813,6 @@
 
     function escapePipes(s){
       return String(s ?? "").replace(/\|/g, "\\|").replace(/\r?\n/g, " ");
-    }
-
-    function parseCSV(text){
-      const rows = [];
-      let row = [];
-      let cur = "";
-      let inQuotes = false;
-
-      for(let i=0;i<text.length;i++){
-        const ch = text[i];
-        const next = text[i+1];
-
-        if(inQuotes){
-          if(ch === '"' && next === '"'){ cur += '"'; i++; continue; }
-          if(ch === '"'){ inQuotes = false; continue; }
-          cur += ch;
-          continue;
-        }
-
-        if(ch === '"'){ inQuotes = true; continue; }
-        if(ch === ","){ row.push(cur); cur=""; continue; }
-        if(ch === "\n"){
-          row.push(cur); cur="";
-          rows.push(row);
-          row = [];
-          continue;
-        }
-        if(ch === "\r"){ continue; }
-
-        cur += ch;
-      }
-      row.push(cur);
-
-      if(!(row.length === 1 && row[0] === "" && rows.length === 0)){
-        rows.push(row);
-      }
-      while(rows.length && rows[rows.length-1].every(c => String(c).trim() === "")){
-        rows.pop();
-      }
-      return rows;
-    }
-
-    function csvToMarkdown(rows, hasHeader=true){
-      if(!rows.length) return "";
-      const colCount = Math.max(...rows.map(r => r.length));
-      const norm = rows.map(r => {
-        const rr = r.slice();
-        while(rr.length < colCount) rr.push("");
-        return rr;
-      });
-
-      const header = hasHeader ? norm[0] : Array.from({length: colCount}, (_,i)=>`col${i+1}`);
-      const body = hasHeader ? norm.slice(1) : norm;
-
-      const headerLine = `| ${header.map(escapePipes).join(" | ")} |`;
-      const sepLine = `| ${header.map(()=> "---").join(" | ")} |`;
-      const bodyLines = body.map(r => `| ${r.map(escapePipes).join(" | ")} |`);
-
-      return [headerLine, sepLine, ...bodyLines].join("\n");
-    }
-
-    function utf8ToB64(str){
-      const bytes = new TextEncoder().encode(str);
-      let bin = "";
-      bytes.forEach(b => bin += String.fromCharCode(b));
-      return btoa(bin);
-    }
-    function b64ToUtf8(b64){
-      const bin = atob(b64);
-      const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
-      return new TextDecoder().decode(bytes);
-    }
-
-    function renderLineDiff(aText, bText){
-      const a = aText.replace(/\r\n/g,"\n").split("\n");
-      const b = bText.replace(/\r\n/g,"\n").split("\n");
-      const max = Math.max(a.length, b.length);
-      const frag = document.createDocumentFragment();
-
-      for(let i=0;i<max;i++){
-        const la = a[i];
-        const lb = b[i];
-        const el = document.createElement("span");
-        el.className = "line";
-
-        if(la === undefined){
-          el.classList.add("onlyB");
-          el.textContent = `+ [B] ${lb}`;
-        } else if(lb === undefined){
-          el.classList.add("onlyA");
-          el.textContent = `- [A] ${la}`;
-        } else if(la === lb){
-          el.classList.add("same");
-          el.textContent = `  ${la}`;
-        } else {
-          el.classList.add("diff");
-          el.textContent = `~ [A] ${la}\n~ [B] ${lb}`;
-        }
-        frag.appendChild(el);
-      }
-      return frag;
     }
 
     // ---------- Live ticker (UTC / Epoch / Patch Tuesday) ----------
@@ -1400,34 +1149,6 @@
       yfTimer = setTimeout(validateYamlOnly, 450);
     });
 
-    // ---------- CSV to Markdown ----------
-    $("csvSampleBtn").addEventListener("click", () => {
-      $("csvInput").value = "name,role,team\nAlice,Admin,Infrastructure\nBob,Helpdesk,EUC\nCharlie,SRE,Platform";
-    });
-
-    $("csvConvertBtn").addEventListener("click", () => {
-      const text = $("csvInput").value;
-      try{
-        const rows = parseCSV(text);
-        if(!rows.length){
-          $("mdOut").value = "";
-          setStatus($("csvStatus"), "Nothing to convert.", "warn");
-          return;
-        }
-        const md = csvToMarkdown(rows, $("csvHasHeader").checked);
-        $("mdOut").value = md;
-        setStatus($("csvStatus"), `Converted ${rows.length} row(s).`, "good");
-      }catch(e){
-        setStatus($("csvStatus"), `Error: ${e.message}`, "bad");
-      }
-    });
-
-    $("csvClearBtn").addEventListener("click", () => {
-      $("csvInput").value = "";
-      $("mdOut").value = "";
-      setStatus($("csvStatus"), "Ready.");
-    });
-
     // ---------- Subnet calculator (IPv4) ----------
     function isValidOctet(n){ return Number.isInteger(n) && n >= 0 && n <= 255; }
 
@@ -1625,81 +1346,6 @@
       const prev = btn.textContent;
       btn.textContent = ok ? "Copied" : "Copy failed";
       setTimeout(()=> btn.textContent = prev, 900);
-    });
-
-    // ---------- Base64 and URL ----------
-    function setB64Out(text, msg, kind="good"){
-      $("b64Out").value = text;
-      setStatus($("b64Status"), msg, kind);
-    }
-
-    $("b64EncodeBtn").addEventListener("click", () => {
-      try{
-        const t = $("b64Input").value;
-        setB64Out(utf8ToB64(t), "Base64 encoded.", "good");
-      }catch(e){
-        setB64Out("", `Error: ${e.message}`, "bad");
-      }
-    });
-
-    $("b64DecodeBtn").addEventListener("click", () => {
-      try{
-        const t = $("b64Input").value.trim();
-        setB64Out(b64ToUtf8(t), "Base64 decoded.", "good");
-      }catch(e){
-        setB64Out("", "Invalid Base64 (or not UTF-8).", "bad");
-      }
-    });
-
-    $("urlEncodeBtn").addEventListener("click", () => {
-      try{
-        const t = $("b64Input").value;
-        setB64Out(encodeURIComponent(t), "URL encoded.", "good");
-      }catch(e){
-        setB64Out("", `Error: ${e.message}`, "bad");
-      }
-    });
-
-    $("urlDecodeBtn").addEventListener("click", () => {
-      try{
-        const t = $("b64Input").value.trim();
-        setB64Out(decodeURIComponent(t), "URL decoded.", "good");
-      }catch(e){
-        setB64Out("", "Invalid URL encoding.", "bad");
-      }
-    });
-
-    $("b64ClearBtn").addEventListener("click", () => {
-      $("b64Input").value = "";
-      $("b64Out").value = "";
-      setStatus($("b64Status"), "Ready.");
-    });
-
-    // ---------- Diff ----------
-    $("diffBtn").addEventListener("click", () => {
-      const a = $("diffA").value;
-      const b = $("diffB").value;
-      const out = $("diffOut");
-      out.textContent = "";
-      if(!a && !b){
-        setStatus($("diffStatus"), "Paste something in A or B.", "warn");
-        return;
-      }
-      out.appendChild(renderLineDiff(a, b));
-      setStatus($("diffStatus"), "Compared.", "good");
-    });
-
-    $("diffSwapBtn").addEventListener("click", () => {
-      const a = $("diffA").value;
-      $("diffA").value = $("diffB").value;
-      $("diffB").value = a;
-    });
-
-    $("diffClearBtn").addEventListener("click", () => {
-      $("diffA").value = "";
-      $("diffB").value = "";
-      $("diffOut").textContent = "";
-      setStatus($("diffStatus"), "Ready.");
     });
 
     // ---------- Password checker ----------
