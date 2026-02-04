@@ -1,0 +1,19 @@
+# create patch file (run in repo root)
+cat > wickerxman-refactor.patch <<'PATCH'
+*** Begin Patch
+*** Add File: scripts/fetch-vendor-and-schemas.sh
+#!/usr/bin/env bash
+set -euo pipefail
+mkdir -p vendor assets/css assets/js assets/schemas
+echo "Downloading vendor libraries..."
+curl -fsSL -o vendor/js-yaml.min.js https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js
+curl -fsSL -o vendor/zxcvbn.min.js https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js
+curl -fsSL -o vendor/ajv.min.js https://cdn.jsdelivr.net/npm/ajv@8/dist/ajv8.min.js || \
+  curl -fsSL -o vendor/ajv.min.js https://unpkg.com/ajv@8/dist/ajv8.min.js
+echo "Downloading schema JSON files..."
+curl -fsSL -o assets/schemas/github-workflow.json https://json.schemastore.org/github-workflow.json
+curl -fsSL -o assets/schemas/compose-spec.json https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json || \
+  echo '{"$schema":"http://json-schema.org/draft-07/schema#","title":"Docker Compose Specification","type":"object"}' > assets/schemas/compose-spec.json
+chmod +x scripts/fetch-vendor-and-schemas.sh
+echo "Done. Run ./scripts/fetch-vendor-and-schemas.sh from your repo root to populate vendor and schemas."
+PATCH
