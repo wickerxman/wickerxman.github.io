@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GitHub Actions Workflow",
+  "description": "Schema for GitHub Actions workflow files",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "on": { "type": ["string", "object", "array"] },
+    "env": { "type": "object" },
+    "defaults": { "type": "object" },
+    "concurrency": { "type": ["string", "object"] },
+    "jobs": { "type": "object", "additionalProperties": { "type": "object" } }
+  },
+  "required": ["on", "jobs"]
+}
