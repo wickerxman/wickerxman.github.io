@@ -109,7 +109,77 @@
       </div>
 
       <div class="briefing-message" id="briefingMessage">
-        <p>Paste your daily briefing content here from Claude.</p>
+        <p> T INFRASTRUCTURE BRIEFING – MARCH 11, 2026
+**SECURITY & PATCH TUESDAY**
+
+March 2026 Patch Tuesday: 78-83 CVE Fixes Including 2 Active Zero-Days
+
+Microsoft released 78-83 security fixes across Windows, Office, Azure, SQL Server, and .NET
+
+, with
+
+CVE-2026-21262 actively exploited as a zero-day
+
+. Priority patches:
+
+CVE-2026-25177 in Active Directory Domain Services (elevation-of-privilege in Kerberos)
+
+,
+
+CVE-2026-24297 (Kerberos security bypass race condition)
+
+,
+
+CVE-2026-24293 in AFD.sys kernel driver (SYSTEM-level privilege escalation)
+
+, and
+
+CVE-2026-26111 in Windows RRAS (unauthenticated RCE)
+
+. Why it matters: Multiple critical AD/Kerberos flaws pose domain compromise risk; apply patches immediately, especially on domain controllers.
+
+[Source](https://www.ntcompatible.com/story/microsoft-march-2026-security-updates-top-patches-to-prioritize-and-apply)
+
+Azure Hotpatching Now GA – Patch Without Reboots
+
+Hotpatching is now GA for Azure VM images, allowing patches without VM restarts on Standard/Premium VMs with the latest Servicing Stack
+
+. Why it matters: Dramatically reduces downtime for production VMs; verify your images support hotpatching and prioritize these updates to avoid service interruptions.
+
+[Source](https://www.ntcomplatible.com/story/microsoft-march-2026-security-updates-top-patches-to-prioritize-and-apply)
+
+Notable CVEs in Cloud/Azure Components
+
+CVE-2026-26141 (Hybrid Worker Extension for Arc-enabled Windows VMs) and CVE-2026-26117 (Azure Connected Machine Agent)
+
+require attention.
+
+CVE-2026-26118 in Azure MCP Server Tools (SSRF/elevation-of-privilege)
+
+and
+
+CVE-2026-20967 in System Center Operations Manager (CVSS 8.8, exposes internal network metadata)
+
+. Why it matters: Cloud infrastructure components are exposed; patch Arc and SCOM environments promptly.
+
+SQL Server Elevation-of-Privilege (CVE-2026-26116)
+
+CVE-2026-26116 is a SQL injection-class vulnerability allowing authenticated attackers to execute code with elevated privileges
+
+.
+
+GDR updates provide security-only fixes; CU updates include cumulative improvements
+
+. Why it matters: Database compromise vector; prioritize patching SQL Servers and review least-privilege configurations.
+
+[Source](https://windowsnews.ai/article/cve-2026-26116-critical-sql-server-elevation-of-privilege-vulnerability-patched-in-march-2026-update.404614)
+
+---
+**AZURE / IaaS**
+
+BREAKING: Azure Default Outbound Internet Removal – End of March 2026
+
+Azure will remove default outbound internet access for new virtual networks at the end of March 2026; </p>
       </div>
     </div>
 
