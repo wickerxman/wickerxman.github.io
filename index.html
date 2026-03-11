@@ -100,6 +100,43 @@
       </div>
     </div>
 
+    <!-- DAILY BRIEFING SECTION -->
+    <div class="briefing-section">
+      <div class="briefing-header">
+        <div class="briefing-label">INFRASTRUCTURE INTELLIGENCE</div>
+        <h2 class="briefing-title">DAILY BRIEFING</h2>
+        <div class="briefing-date" id="briefingDate">—</div>
+      </div>
+
+      <div class="briefing-content">
+        <div class="briefing-group">
+          <div class="briefing-group-label">TIMEFRAME</div>
+          <div class="briefing-buttons">
+            <button class="briefing-btn active" data-timeframe="today">TODAY</button>
+            <button class="briefing-btn" data-timeframe="week">THIS WEEK</button>
+          </div>
+        </div>
+
+        <div class="briefing-group">
+          <div class="briefing-group-label">TOPICS</div>
+          <div class="briefing-topics">
+            <span class="briefing-chip">☁️ Azure / IaaS</span>
+            <span class="briefing-chip">📧 Intune / Entra</span>
+            <span class="briefing-chip">🪟 Windows / Sysadmin</span>
+            <span class="briefing-chip">🔒 Security / CVEs</span>
+            <span class="briefing-chip">⚙️ DevOps / Automation</span>
+            <span class="briefing-chip">📦 3rd Party Apps</span>
+          </div>
+        </div>
+
+        <div class="briefing-message" id="briefingMessage">
+          <p>Paste your daily briefing content here. You can update this section manually in the HTML, or automate it with GitHub Actions to push updates daily.</p>
+        </div>
+
+        <button class="btn good" id="runBriefingBtn" style="margin-top:16px;">[ RUN BRIEFING ]</button>
+      </div>
+    </div>
+
     <noscript>
       This page needs JavaScript to run the tools. Your pasted data still stays local and is processed in-browser.
     </noscript>

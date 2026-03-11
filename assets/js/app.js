@@ -97,6 +97,29 @@ document.addEventListener("DOMContentLoaded", function() {
   updateTicker();
   setInterval(updateTicker, 1000);
 
+  // Update briefing date on load
+  const today = new Date();
+  const briefingDate = today.toISOString().split('T')[0];
+  const briefingDateEl = $("briefingDate");
+  if(briefingDateEl) briefingDateEl.textContent = briefingDate;
+
+  // Briefing timeframe buttons
+  document.querySelectorAll(".briefing-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".briefing-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+  });
+
+  // Run briefing button
+  const runBriefingBtn = $("runBriefingBtn");
+  if(runBriefingBtn) {
+    runBriefingBtn.addEventListener("click", () => {
+      console.log("Briefing generation triggered");
+      alert("Briefing generation can be configured to pull from your data source or external API.");
+    });
+  }
+
   $("openAllBtn").addEventListener("click", () => document.querySelectorAll("details").forEach(d=>d.open=true));
   $("closeAllBtn").addEventListener("click", () => document.querySelectorAll("details").forEach(d=>d.open=false));
   $("clearAllBtn").addEventListener("click", () => {
