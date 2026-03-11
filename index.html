@@ -109,101 +109,62 @@
       </div>
 
       <div class="briefing-message" id="briefingMessage">
-        <p> 
-        //
-        <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IT Briefing — 2026-03-11</title>
-  <style>
-    body { background: #0e1410; color: #c9d6c9; font-family: 'Courier New', monospace; padding: 2rem; max-width: 860px; margin: 0 auto; }
-    .header { border-bottom: 1px solid #1e3028; padding-bottom: 1.2rem; margin-bottom: 1.8rem; }
-    .label { font-size: 0.7rem; color: #4a7a5a; letter-spacing: 0.2em; margin-bottom: 0.3rem; }
-    h1 { margin: 0; font-size: 1.6rem; color: #a8e6cf; letter-spacing: 0.05em; font-weight: normal; }
-    .date { font-size: 0.75rem; color: #4a6a54; margin-top: 0.3rem; }
-    .output { border: 1px solid #1e3028; background: #0b120e; padding: 1.5rem; }
-    .meta { display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid #1a2a1a; padding-bottom: 0.8rem; font-size: 0.65rem; color: #4a7a5a; letter-spacing: 0.15em; }
-    h3 { color: #7dd3b0; margin-top: 1.2rem; margin-bottom: 0.3rem; font-size: 0.95rem; letter-spacing: 0.05em; text-transform: uppercase; }
-    .item { padding-left: 1rem; border-left: 2px solid #2a4a3e; margin-bottom: 0.5rem; color: #c9d6c9; line-height: 1.6; }
-    .spacer { height: 0.5rem; }
-    p { color: #b0bfb0; margin: 0.2rem 0; line-height: 1.6; }
-    strong { color: #a8e6cf; }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <div class="label">INFRASTRUCTURE INTELLIGENCE</div>
-    <h1>DAILY BRIEFING</h1>
-    <div class="date">2026-03-11</div>
-  </div>
-  <div class="output">
-    <div class="meta">
-<div class="spacer"></div>
-<h3>IT INFRASTRUCTURE BRIEFING | March 11, 2026</h3>
-<div class="spacer"></div>
-<h3>AZURE / IaaS</h3>
-<div class="spacer"></div>
-<p><strong>Azure Default Outbound Internet Access Removal – End of March 2026</strong></p>
-<div class="spacer"></div>
-<p>Azure will remove default outbound internet for new virtual networks at the end of March 2026. New VMs and services may fail Windows activation, Intune sync, and updates unless you provision an Azure NAT Gateway or equivalent outbound path.</p>
-<p> Update deployment templates and automation now to avoid SNAT exhaustion and connectivity failures.</p>
-<p>Source: HubSite365 Azure Update</p>
-<div class="spacer"></div>
-<p><strong>Hotpatching Now GA for Azure VM Images</strong></p>
-<div class="spacer"></div>
-<p>Hotpatching is now available for Azure VM images, allowing users to apply patches without restarting their virtual machines.</p>
-<p> If you're on Azure Standard or Premium VMs with the latest Servicing Stack, you can apply most of March's 83 patches without reboots. Major uptime win for production workloads.</p>
-<p>Source: NT Compatible</p>
-<div class="spacer"></div>
-<p><strong>Azure IoT Explorer CVEs</strong></p>
-<div class="spacer"></div>
-<p>Azure IoT Explorer CVEs could let an attacker read telemetry from connected devices.</p>
-<p> If you're using Azure IoT Explorer in production, prioritize the March patches.</p>
-<p>Source: NT Compatible</p>
-<div class="spacer"></div>
-<p><strong>Azure Compute Gallery & Arc CVEs</strong></p>
-<div class="spacer"></div>
-<p>Notable mentions include CVE-2026-26141 in the Hybrid Worker Extension for Arc-enabled Windows VMs and CVE-2026-26117 in the Azure Connected Machine Agent.</p>
-<p> These are crucial for maintaining cloud-based environment security integrity.</p>
-<p>Source: CyberWebSpider</p>
-<div class="spacer"></div>
-<p>---</p>
-<div class="spacer"></div>
-<h3>INTUNE / ENTRA</h3>
-<div class="spacer"></div>
-<p><strong>Microsoft Entra Connect SyncJacking Hardening – Enforcement Begins March 2026</strong></p>
-<div class="spacer"></div>
-<p>Microsoft has implemented new safeguards to block account takeover attempts via hard match abuse in Microsoft Entra Connect (known as SyncJacking). Enforcement of this change begins in March 2026.</p>
-<div class="spacer"></div>
-<p>Enforcement logic now checks OnPremisesObjectIdentifier to detect and block remapping attempts.</p>
-<p> Upgrade to the latest Entra Connect version and review hardening guidance immediately.</p>
-<p>Source: Microsoft Learn</p>
-<div class="spacer"></div>
-<p><strong>Entra: Hard-Match Restrictions for Privileged Roles – June 2026</strong></p>
-<div class="spacer"></div>
-<p>Beginning June 1 2026, Microsoft Entra ID will block any attempt by Microsoft Entra Connect Sync or Cloud Sync from hard-matching a new user object from Active Directory to an existing cloud-managed Microsoft Entra ID user object that holds privileged roles.</p>
-<p> This prevents attackers from taking over privileged cloud users by manipulating on-prem AD attributes.</p>
-<p>Source: Microsoft Learn</p>
-<div class="spacer"></div>
-<p><strong>Passkey Profiles Auto-Enabled – March-May 2026</strong></p>
-<div class="spacer"></div>
-<p>Beginning March 2026, Microsoft will automatically enable Passkey Profiles and shift registration campaigns toward passkey enrollment instead of traditional MFA apps. Tenants that have not previously configured passkey profiles may be automatically migrated to the new configuration.</p>
-<p> Review your authentication policies now if you have strong opinions about passkey rollout timing.</p>
-<p>Source: SSOJet</p>
-<div class="spacer"></div>
-<p><strong>Authenticator Jailbreak/Root Detection – February 2026 Rollout</strong></p>
-<div class="spacer"></div>
-<p>Starting February 2026, we'll introduce Jailbreak/Root detection for Microsoft Entra credentials in the Authenticator app. All existing credentials on such devices will be wiped to protect your organization.</p>
-<p> Notify end users about this change; Authenticator will become unusable for Microsoft Entra accounts on jailbroken/rooted devices.</p>
-<p>Source: Microsoft Learn (Entra)</p>
-<div class="spacer"></div>
-<p><strong>Intune: Device Management Type Property Update – Late March 2026</strong></p>
-<div class="spacer"></div>
-<p>This feature is rolling out slowly and should be available for all customers by late March 2026.</p>
-<p> Ensures app assignment filters correctly match granular</p>
-  </div>
+        <div class="briefing-content">
+          <div class="briefing-meta">
+            <h3>IT INFRASTRUCTURE BRIEFING | March 11, 2026</h3>
+          </div>
+
+          <h3>AZURE / IaaS</h3>
+
+          <p><strong>Azure Default Outbound Internet Access Removal – End of March 2026</strong></p>
+          <p>Azure will remove default outbound internet for new virtual networks at the end of March 2026. New VMs and services may fail Windows activation, Intune sync, and updates unless you provision an Azure NAT Gateway or equivalent outbound path.</p>
+          <p>Update deployment templates and automation now to avoid SNAT exhaustion and connectivity failures.</p>
+          <p><em>Source: HubSite365 Azure Update</em></p>
+
+          <p><strong>Hotpatching Now GA for Azure VM Images</strong></p>
+          <p>Hotpatching is now available for Azure VM images, allowing users to apply patches without restarting their virtual machines.</p>
+          <p>If you're on Azure Standard or Premium VMs with the latest Servicing Stack, you can apply most of March's 83 patches without reboots. Major uptime win for production workloads.</p>
+          <p><em>Source: NT Compatible</em></p>
+
+          <p><strong>Azure IoT Explorer CVEs</strong></p>
+          <p>Azure IoT Explorer CVEs could let an attacker read telemetry from connected devices.</p>
+          <p>If you're using Azure IoT Explorer in production, prioritize the March patches.</p>
+          <p><em>Source: NT Compatible</em></p>
+
+          <p><strong>Azure Compute Gallery & Arc CVEs</strong></p>
+          <p>Notable mentions include CVE-2026-26141 in the Hybrid Worker Extension for Arc-enabled Windows VMs and CVE-2026-26117 in the Azure Connected Machine Agent.</p>
+          <p>These are crucial for maintaining cloud-based environment security integrity.</p>
+          <p><em>Source: CyberWebSpider</em></p>
+
+          <hr>
+
+          <h3>INTUNE / ENTRA</h3>
+
+          <p><strong>Microsoft Entra Connect SyncJacking Hardening – Enforcement Begins March 2026</strong></p>
+          <p>Microsoft has implemented new safeguards to block account takeover attempts via hard match abuse in Microsoft Entra Connect (known as SyncJacking). Enforcement of this change begins in March 2026.</p>
+          <p>Enforcement logic now checks OnPremisesObjectIdentifier to detect and block remapping attempts.</p>
+          <p>Upgrade to the latest Entra Connect version and review hardening guidance immediately.</p>
+          <p><em>Source: Microsoft Learn</em></p>
+
+          <p><strong>Entra: Hard-Match Restrictions for Privileged Roles – June 2026</strong></p>
+          <p>Beginning June 1 2026, Microsoft Entra ID will block any attempt by Microsoft Entra Connect Sync or Cloud Sync from hard-matching a new user object from Active Directory to an existing cloud-managed Microsoft Entra ID user object that holds privileged roles.</p>
+          <p>This prevents attackers from taking over privileged cloud users by manipulating on-prem AD attributes.</p>
+          <p><em>Source: Microsoft Learn</em></p>
+
+          <p><strong>Passkey Profiles Auto-Enabled – March-May 2026</strong></p>
+          <p>Beginning March 2026, Microsoft will automatically enable Passkey Profiles and shift registration campaigns toward passkey enrollment instead of traditional MFA apps. Tenants that have not previously configured passkey profiles may be automatically migrated to the new configuration.</p>
+          <p>Review your authentication policies now if you have strong opinions about passkey rollout timing.</p>
+          <p><em>Source: SSOJet</em></p>
+
+          <p><strong>Authenticator Jailbreak/Root Detection – February 2026 Rollout</strong></p>
+          <p>Starting February 2026, we'll introduce Jailbreak/Root detection for Microsoft Entra credentials in the Authenticator app. All existing credentials on such devices will be wiped to protect your organization.</p>
+          <p>Notify end users about this change; Authenticator will become unusable for Microsoft Entra accounts on jailbroken/rooted devices.</p>
+          <p><em>Source: Microsoft Learn (Entra)</em></p>
+
+          <p><strong>Intune: Device Management Type Property Update – Late March 2026</strong></p>
+          <p>This feature is rolling out slowly and should be available for all customers by late March 2026.</p>
+          <p>Ensures app assignment filters correctly match granular device management types.</p>
+        </div>
       </div>
 
     <noscript>
