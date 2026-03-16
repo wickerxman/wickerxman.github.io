@@ -51,6 +51,15 @@ document.addEventListener("DOMContentLoaded", function() {
     return `${y}-${m}-${day}`;
   }
 
+  function getISOWeek(d) {
+  const date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+  return Math.ceil(((date - yearStart) / 86400000 + 1) / 7);
+}
+
+
+
   function formatCountdown(ms){
     if(ms <= 0) return "today";
     const totalSec = Math.floor(ms / 1000);
@@ -70,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
     $("tickUtc").textContent = utcText;
     $("tickEpochS").textContent = String(epochS);
     $("tickEpochMs").textContent = String(nowMs);
+    $("tickWeek").textContent = "W" + getISOWeek(now);
     const pt = nextPatchTuesdayUTC(now);
     const msTo = pt.getTime() - nowMs;
     const isTodayUTC = now.getUTCFullYear() === pt.getUTCFullYear() && now.getUTCMonth() === pt.getUTCMonth() && now.getUTCDate() === pt.getUTCDate();
