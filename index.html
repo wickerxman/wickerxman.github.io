@@ -111,61 +111,38 @@
       <div class="briefing-message" id="briefingMessage">
         <div class="briefing-content">
           <div class="briefing-meta">
-            <h3>IT INFRASTRUCTURE BRIEFING | March 11, 2026</h3>
+            <h3>IT INFRASTRUCTURE BRIEFING | March 13, 2026</h3>
           </div>
+          
+AZURE / IaaS
+Azure DevOps Server group membership bug — patch released today
+A patch was released March 13 for an issue introduced in the recent Azure DevOps Server GA that could cause group memberships to become deactivated under certain conditions. The fix applies to anyone who installed before the March 13 re-published release; if you ran the earlier SQL mitigation script, installing the patch completes remediation. Microsoft Developer Blogs Check your ADO Server version if you're self-hosted.
+Azure SRE Agent enhancements
+Azure's SRE Agent received new capabilities this week — easier incident response, more automated health checks, and tighter integration with Azure Monitor. HubSite 365 Worth a look if you're building any runbook-adjacent automation.
+Azure Storage Mover (preview) — private S3-to-Blob transfers
+A new preview feature enables private transfers from AWS S3 to Azure Blob storage without exposing data to the public internet, reducing manual migration steps. HubSite 365
 
-          <h3>AZURE / IaaS</h3>
+INTUNE / ENTRA
+Microsoft Technical Takeoff 2026 — Windows + Intune (today is session 3)
+The four-Monday series runs March 2, 9, 16, and 23. Today's sessions cover device management, hotpatching, NTLM removal, passkeys, and Endpoint Privilege Management. Windows Forum Free, virtual, and recorded — worth queuing up if you haven't been following along.
+Hotpatching going on by default via Intune (May 2026)
+Starting with the May 2026 Windows security update, hotpatching will become the default behavior for all eligible Intune-managed devices, with Microsoft claiming organizations can reach 90% patch compliance in half the time. The Hacker News Start inventorying devices against hotpatch prerequisites now.
+Intune Azure Front Door IP changes — check your firewall rules
+Intune began using Azure Front Door IP addresses in addition to existing service IPs. Organizations using IP-based allowlists or strict outbound filtering may see degraded or failed device connectivity. FQDN-based wildcard rules (*.manage.microsoft.com) are recommended over IP-based rules. Microsoft Learn
+Intune newsletter highlights (week of March 13)
+Notable community posts this week: a new PowerShell script installer for Win32 apps (with a bitness caveat to watch), a Remote Desktop Client migration tool for moving users to the Windows app, and a fix for Edge MAM on iOS repeatedly removing the work account after sign-in. Andrew Taylor
 
-          <p><strong>Azure Default Outbound Internet Access Removal – End of March 2026</strong></p>
-          <p>Azure will remove default outbound internet for new virtual networks at the end of March 2026. New VMs and services may fail Windows activation, Intune sync, and updates unless you provision an Azure NAT Gateway or equivalent outbound path.</p>
-          <p>Update deployment templates and automation now to avoid SNAT exhaustion and connectivity failures.</p>
-          <p><em>Source: HubSite365 Azure Update</em></p>
+WINDOWS / SYSADMIN
+Entra ID auto-enabling Passkey profiles — heads up
+Microsoft is beginning to auto-enable Passkey profiles in Entra ID starting March 2026. Kurt Shintaku's Blog If you haven't reviewed your authentication policies, now's the time — users may start seeing passkey prompts without admin action.
+VS Code MSSQL query profiler now available
+An integrated SQL query profiler is now available inside VS Code, letting developers profile queries locally and identify execution hotspots without leaving the editor. HubSite 365 Handy if any of your automation touches SQL backends.
 
-          <p><strong>Hotpatching Now GA for Azure VM Images</strong></p>
-          <p>Hotpatching is now available for Azure VM images, allowing users to apply patches without restarting their virtual machines.</p>
-          <p>If you're on Azure Standard or Premium VMs with the latest Servicing Stack, you can apply most of March's 83 patches without reboots. Major uptime win for production workloads.</p>
-          <p><em>Source: NT Compatible</em></p>
-
-          <p><strong>Azure IoT Explorer CVEs</strong></p>
-          <p>Azure IoT Explorer CVEs could let an attacker read telemetry from connected devices.</p>
-          <p>If you're using Azure IoT Explorer in production, prioritize the March patches.</p>
-          <p><em>Source: NT Compatible</em></p>
-
-          <p><strong>Azure Compute Gallery & Arc CVEs</strong></p>
-          <p>Notable mentions include CVE-2026-26141 in the Hybrid Worker Extension for Arc-enabled Windows VMs and CVE-2026-26117 in the Azure Connected Machine Agent.</p>
-          <p>These are crucial for maintaining cloud-based environment security integrity.</p>
-          <p><em>Source: CyberWebSpider</em></p>
-
-          <hr>
-
-          <h3>INTUNE / ENTRA</h3>
-
-          <p><strong>Microsoft Entra Connect SyncJacking Hardening – Enforcement Begins March 2026</strong></p>
-          <p>Microsoft has implemented new safeguards to block account takeover attempts via hard match abuse in Microsoft Entra Connect (known as SyncJacking). Enforcement of this change begins in March 2026.</p>
-          <p>Enforcement logic now checks OnPremisesObjectIdentifier to detect and block remapping attempts.</p>
-          <p>Upgrade to the latest Entra Connect version and review hardening guidance immediately.</p>
-          <p><em>Source: Microsoft Learn</em></p>
-
-          <p><strong>Entra: Hard-Match Restrictions for Privileged Roles – June 2026</strong></p>
-          <p>Beginning June 1 2026, Microsoft Entra ID will block any attempt by Microsoft Entra Connect Sync or Cloud Sync from hard-matching a new user object from Active Directory to an existing cloud-managed Microsoft Entra ID user object that holds privileged roles.</p>
-          <p>This prevents attackers from taking over privileged cloud users by manipulating on-prem AD attributes.</p>
-          <p><em>Source: Microsoft Learn</em></p>
-
-          <p><strong>Passkey Profiles Auto-Enabled – March-May 2026</strong></p>
-          <p>Beginning March 2026, Microsoft will automatically enable Passkey Profiles and shift registration campaigns toward passkey enrollment instead of traditional MFA apps. Tenants that have not previously configured passkey profiles may be automatically migrated to the new configuration.</p>
-          <p>Review your authentication policies now if you have strong opinions about passkey rollout timing.</p>
-          <p><em>Source: SSOJet</em></p>
-
-          <p><strong>Authenticator Jailbreak/Root Detection – February 2026 Rollout</strong></p>
-          <p>Starting February 2026, we'll introduce Jailbreak/Root detection for Microsoft Entra credentials in the Authenticator app. All existing credentials on such devices will be wiped to protect your organization.</p>
-          <p>Notify end users about this change; Authenticator will become unusable for Microsoft Entra accounts on jailbroken/rooted devices.</p>
-          <p><em>Source: Microsoft Learn (Entra)</em></p>
-
-          <p><strong>Intune: Device Management Type Property Update – Late March 2026</strong></p>
-          <p>This feature is rolling out slowly and should be available for all customers by late March 2026.</p>
-          <p>Ensures app assignment filters correctly match granular device management types.</p>
-        </div>
-      </div>
+DEVOPS / AUTOMATION
+GitHub Copilot Coding Agent now in Azure Boards — custom agents supported
+The GitHub Copilot Coding Agent for Azure Boards is now available to all customers, with a new capability to select and use custom agents defined at the repo level. Microsoft Developer Blogs
+Azure DevOps Advanced Security — PAT restriction re-enforced April 15
+A previously lifted PAT restriction for Advanced Security will be re-enforced on April 15, 2026. The recommended path is a service principal with Advanced Security: Read alerts permissions scoped narrowly to Advanced Security-enabled repositories. Microsoft Developer Blogs If you have automation using PATs against GHAzDO, sort this before mid-April.
 
     <noscript>
       This page needs JavaScript to run the tools. Your pasted data still stays local and is processed in-browser.
